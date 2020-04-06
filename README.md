@@ -1,4 +1,4 @@
-## ThoughtFocus React Kit
+## Driver Applicant
 
 [Discription about the project]
 
@@ -26,5 +26,5 @@
 
 - Install dependencies: `npm install`
 - Start the server: `npm run start`
-- Views are on: `localhost:3000`
+- Views are on: `localhost:80`
 - Latest node & react versions recommended
