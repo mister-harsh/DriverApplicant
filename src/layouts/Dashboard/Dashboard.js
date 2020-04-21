@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
 
-import { NavBar, TopBar } from './components';
+// import { NavBar, TopBar } from './components';
+
+import { Topbar } from 'components';
+
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -51,16 +54,16 @@ const Dashboard = props => {
 
   return (
     <div className={classes.root}>
-      <TopBar
+      <Topbar
         className={classes.topBar}
-        onOpenNavBarMobile={handleNavBarMobileOpen}
+        // onOpenNavBarMobile={handleNavBarMobileOpen}
       />
       <div className={classes.container}>
-        <NavBar
+        {/* <NavBar
           className={classes.navBar}
           onMobileClose={handleNavBarMobileClose}
           openMobile={openNavBarMobile}
-        />
+        /> */}
         <main className={classes.content}>
           <Suspense fallback={<LinearProgress />}>
             {renderRoutes(route.routes)}

@@ -21,3 +21,5 @@ export { default as ScrollReset } from './ScrollReset';
 export { default as SearchBar } from './SearchBar';
 export { default as StackAvatars } from './StackAvatars';
 export { default as TableEditBar } from './TableEditBar';
+export { default as Footer } from './Footer';
+export {default as Topbar} from './Topbar'

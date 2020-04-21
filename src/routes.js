@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: () => <Redirect to="/Dashboard" />
+    component: () => <Redirect to="/wizard" />
   },
   {
     path: '/auth',
@@ -23,11 +23,6 @@ const routes = [
         path: '/auth/login',
         exact: true,
         component: lazy(() => import('views/Login'))
-      },
-      {
-        path: '/auth/register',
-        exact: true,
-        component: lazy(() => import('views/Register'))
       },
       {
         component: () => <Redirect to="/errors/error-404" />
@@ -63,9 +58,9 @@ const routes = [
     component: DashboardLayout,
     routes: [
       {
-        path: '/calendar',
+        path: '/wizard',
         exact: true,
-        component: lazy(() => import('views/Calendar'))
+        component: lazy(() => import('views/Wizard'))
       },
       {
         path: '/dashboard',
@@ -78,24 +73,24 @@ const routes = [
         component: lazy(() => import('views/WorkFlow'))
       },
       {
-        path: '/management/customers',
+        path: '/tableType1',
         exact: true,
-        component: lazy(() => import('views/CustomerManagementList'))
+        component: lazy(() => import('views/TableType1'))
       },
       {
-        path: '/management/customers/:id',
+        path: '/tableType1/details/:id',
         exact: true,
-        component: lazy(() => import('views/CustomerManagementDetails'))
+        component: lazy(() => import('views/TableDetails'))
       },
       {
-        path: '/management/customers/:id/:tab',
+        path: '/tableType1/details/:id/:tab',
         exact: true,
-        component: lazy(() => import('views/CustomerManagementDetails'))
+        component: lazy(() => import('views/TableDetails'))
       },
       {
-        path: '/management/projects',
+        path: '/tableType2',
         exact: true,
-        component: lazy(() => import('views/ProjectManagementList'))
+        component: lazy(() => import('views/TableType2')) 
       },
     
       {

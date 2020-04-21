@@ -34,15 +34,15 @@ export default [
         children: [
           {
             title: 'Customers',
-            href: '/management/customers'
+            href: '/tableType1/details'
           },
           {
             title: 'Customer Details',
-            href: '/management/customers/1/summary'
+            href: '/tableType1/details/1/summary'
           },
           {
             title: 'Projects',
-            href: '/management/projects'
+            href: '/tableType2'
           }
         ]
       },

@@ -54,13 +54,13 @@ const Error404 = () => {
         You either tried some shady route or you came here by mistake. Whichever
         it is, try using the navigation
       </Typography>
-      <div className={classes.imageContainer}>
+      {/* <div className={classes.imageContainer}>
         <img
           alt="Under development"
           className={classes.image}
           src="/images/undraw_page_not_found_su7k.svg"
         />
-      </div>
+      </div> */}
       <div className={classes.buttonContainer}>
         <Button
           color="primary"

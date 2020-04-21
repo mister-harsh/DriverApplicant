@@ -120,7 +120,7 @@ const UserActivity = props => {
                 primary={
                   <Typography
                     component={RouterLink}
-                    to="/management/customers/1"
+                    to="/tableType1/details/1"
                     variant="h6"
                   >
                     {customer.author.name}

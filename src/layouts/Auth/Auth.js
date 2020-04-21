@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
 
-import { Topbar } from './components';
+// import { Topbar } from './components';
+import { Topbar } from 'components';
+import {Footer} from 'components'
 
 const useStyles = makeStyles(theme => ({
   content: {
@@ -29,6 +31,7 @@ const Auth = props => {
           {renderRoutes(route.routes)}
         </Suspense>
       </main>
+      <Footer/>
     </Fragment>
   );
 };

@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import mock from 'utils/mock';
 
-mock.onGet('/api/management/customers').reply(200, {
+mock.onGet('/api/tableType1/details').reply(200, {
   customers: [
     {
       id: uuid(),
@@ -140,7 +140,7 @@ mock.onGet('/api/management/customers').reply(200, {
   ]
 });
 
-mock.onGet('/api/management/customers/1/summary').reply(200, {
+mock.onGet('/api/tableType1/details/1/summary').reply(200, {
   summary: {
     name: 'Ekaterina Tankova',
     email: 'ekaterina@mock.com',
@@ -199,7 +199,7 @@ mock.onGet('/api/management/customers/1/summary').reply(200, {
   }
 });
 
-mock.onGet('/api/management/customers/1/invoices').reply(200, {
+mock.onGet('/api/tableType1/details/1/invoices').reply(200, {
   invoices: [
     {
       id: uuid(),
@@ -222,7 +222,7 @@ mock.onGet('/api/management/customers/1/invoices').reply(200, {
   ]
 });
 
-mock.onGet('/api/management/customers/1/logs').reply(200, {
+mock.onGet('/api/tableType1/details/1/logs').reply(200, {
   logs: [
     {
       id: uuid(),
