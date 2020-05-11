@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/styles';
 import { LinearProgress } from '@material-ui/core';
 
 // import { NavBar, TopBar } from './components';
-
+import {Footer} from 'components'
 import { Topbar } from 'components';
 
 
@@ -15,7 +15,8 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    paddingBottom:'50px'
   },
   topBar: {
     zIndex: 2,
@@ -68,6 +69,7 @@ const Dashboard = props => {
           <Suspense fallback={<LinearProgress />}>
             {renderRoutes(route.routes)}
           </Suspense>
+          <Footer/>
         </main>
       </div>
     </div>

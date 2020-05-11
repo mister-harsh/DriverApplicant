@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -19,7 +19,7 @@ import { Page } from 'components';
 import gradients from 'utils/gradients';
 import { LoginForm, CreatePasswordForm } from './components';
 
-import ModalCustom from 'components/ModalCustom'
+import ModalCustom from 'components/ModalCustom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,19 +30,23 @@ const useStyles = makeStyles(theme => ({
     // paddingLeft:'50px',
     padding: theme.spacing(6, 10),
     [theme.breakpoints.down('xs')]: {
-      alignItems:'initial'
+      alignItems: 'initial',
+      padding: theme.spacing(2),
     }
   },
   subtitle2: {
     color: '#ffffffe6'
   },
-  typoColor:{
-    color:'#555'
+  typoColor: {
+    color: '#555'
   },
   login: {
     background: 'url(/images/login-bg.jpg) no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: '50% 26%',
+    [theme.breakpoints.down('sm')]: {
+      backgroundPosition: '90% 26%',
+    }
   },
   card: {
     // width: theme.breakpoints.values.md,
@@ -51,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     // display: 'flex',
     position: 'relative',
     backgroundColor: 'transparent',
-    boxShadow:'none',
+    boxShadow: 'none',
     '& > *': {
       flexGrow: 1,
       flexBasis: '50%',
@@ -62,15 +66,16 @@ const useStyles = makeStyles(theme => ({
       }
     },
     [theme.breakpoints.down('xs')]: {
-      flexDirection:'column'
+      flexDirection: 'column'
     }
   },
   content: {
     padding: '20px',
-    paddingBottom:'15px !important',
+    paddingBottom: '15px !important',
     backgroundColor: '#fff',
     [theme.breakpoints.down('xs')]: {
-      order:'2'
+      order: '2',
+      padding: '10px 15px',
     }
   },
   media: {
@@ -80,24 +85,26 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2.5),
     color: theme.palette.white,
     display: 'flex',
-    paddingBottom:'70px',
+    paddingBottom: '70px',
     backgroundColor: '#0001197d',
     flexDirection: 'column',
     // justifyContent: 'flex-end',
-    marginBottom:'15px',
+    marginBottom: '15px',
     [theme.breakpoints.down('xs')]: {
-      order:'1'
+      order: '1',
+      padding: '5px 20px 15px 20px',
     }
   },
   mediaTitle: {
     marginBottom: '5px'
   },
-  mediaButton:{
-    position:'absolute',
-    bottom:'20px',
-    width:'max-content',
+  mediaButton: {
+    position: 'absolute',
+    bottom: '20px',
+    width: 'max-content',
     [theme.breakpoints.down('xs')]: {
-      display:'none'
+      position: 'static',
+      marginTop:'5px'
     }
   },
   descPoints: {
@@ -120,12 +127,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2)
   },
   divider: {
-    margin: theme.spacing(2, 0)
+    margin: '12px 0px 8px 0'
   },
-  divider2:{
+  divider2: {
     margin: theme.spacing(1, 0),
-    backgroundColor:'#b3b3b3'
-
+    backgroundColor: '#b3b3b3'
   },
   person: {
     marginTop: theme.spacing(2),
@@ -134,15 +140,15 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     marginRight: theme.spacing(2)
   },
-  createTitle:{
+  createTitle: {
     marginBottom: '15px'
   },
   firstLink: {
     cursor: 'pointer'
   },
-  returningApplicant:{
+  returningApplicant: {
     color: theme.palette.yellow,
-    textDecoration:'underline'
+    textDecoration: 'underline'
   }
 }));
 
@@ -151,11 +157,9 @@ const Login = () => {
 
   const [openCreatePass, setOpenCreatePass] = useState(false);
 
-
   const handleOpenCreatePass = () => {
     setOpenCreatePass(true);
-     
-  }
+  };
 
   const handleCloseCreatePass = () => {
     setOpenCreatePass(!openCreatePass);
@@ -164,7 +168,6 @@ const Login = () => {
   return (
     <Page className={clsx(classes.root, classes.login)} title="Login">
       <Card className={classes.card}>
-        
         <CardMedia className={classes.media} title="Cover">
           <Typography
             color="inherit"
@@ -174,10 +177,7 @@ const Login = () => {
             Welcome!
           </Typography>
 
-          <Typography
-            color="inherit"
-            variant="h5"
-            >
+          <Typography color="inherit" variant="h5">
             Local CDL Truck Driver – Home Daily
           </Typography>
           <Divider className={classes.divider2} />
@@ -227,7 +227,10 @@ const Login = () => {
             </li>
           </ul>
 
-          <Button className={classes.mediaButton} variant="contained" color="primary">
+          <Button
+            className={classes.mediaButton}
+            variant="contained"
+            color="primary">
             View Full Job Description
           </Button>
         </CardMedia>
@@ -236,8 +239,10 @@ const Login = () => {
           <Typography gutterBottom variant="h4">
             Get Started!
           </Typography>
-          <Typography className={classes.returningApplicant} variant="subtitle2">
-          Returning Applicant
+          <Typography
+            className={classes.returningApplicant}
+            variant="subtitle2">
+            Returning Applicant
           </Typography>
           <LoginForm className={classes.loginForm} />
           <Divider className={classes.divider} />
@@ -259,74 +264,67 @@ const Login = () => {
         close={handleCloseCreatePass}
         actions={false}
         backDrop={true}
-        width="md"
-      >
-       <Grid container spacing={6}>
-        <Grid item xs={12} sm={6} md={7} lg={7} >
-        <Typography
-            color="inherit"
-            variant="h4"
-            >
-           Before you begin, you will need:
-          </Typography>
-          <ul className={classes.descPoints}>
-            <li>
-              {' '}
-              <Typography
-                className={classes.typoColor}
-                color="inherit"
-                variant="subtitle1">
-                Residency history for prior 3 years
-              </Typography>
-            </li>
-            <li>
-              <Typography
-                className={classes.typoColor}
-                color="inherit"
-                variant="subtitle1">
-                Employment history - must provide 3 years
-              </Typography>
-            </li>
-            <li>
-              <Typography
-                className={classes.typoColor}
-                color="inherit"
-                variant="subtitle1">
-                Employment history - plus 7 years if applying for CDL position
-              </Typography>
-            </li>
-            <li>
-              <Typography
-                className={classes.typoColor}
-                color="inherit"
-                variant="subtitle1">
-                Driving Experience history
-              </Typography>
-            </li>
-            <li>
-              <Typography
-                className={classes.typoColor}
-                color="inherit"
-                variant="subtitle1">
-                Driver’s License Information (current license and license held
-                in another state within the prior 3 years)
-              </Typography>
-            </li>
-          </ul>
-
-
+        width="md">
+        <Grid container spacing={6}>
+          <Grid item xs={12} sm={6} md={7} lg={7}>
+            <Typography color="inherit" variant="h4">
+              Before you begin, you will need:
+            </Typography>
+            <ul className={classes.descPoints}>
+              <li>
+                {' '}
+                <Typography
+                  className={classes.typoColor}
+                  color="inherit"
+                  variant="subtitle1">
+                  Residency history for prior 3 years
+                </Typography>
+              </li>
+              <li>
+                <Typography
+                  className={classes.typoColor}
+                  color="inherit"
+                  variant="subtitle1">
+                  Employment history - must provide 3 years
+                </Typography>
+              </li>
+              <li>
+                <Typography
+                  className={classes.typoColor}
+                  color="inherit"
+                  variant="subtitle1">
+                  Employment history - plus 7 years if applying for CDL position
+                </Typography>
+              </li>
+              <li>
+                <Typography
+                  className={classes.typoColor}
+                  color="inherit"
+                  variant="subtitle1">
+                  Driving Experience history
+                </Typography>
+              </li>
+              <li>
+                <Typography
+                  className={classes.typoColor}
+                  color="inherit"
+                  variant="subtitle1">
+                  Driver’s License Information (current license and license held
+                  in another state within the prior 3 years)
+                </Typography>
+              </li>
+            </ul>
+          </Grid>
+          <Grid item xs={12} sm={6} md={5} lg={5}>
+            <Typography
+              color="inherit"
+              variant="h4"
+              className={classes.createTitle}>
+              Create Your User Name &amp; Password
+            </Typography>
+            <CreatePasswordForm />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6} md={5} lg={5}>
-        <Typography
-            color="inherit"
-            variant="h4"
-            className={classes.createTitle}
-            >
-           Create Your User Name &amp; Password
-          </Typography>
-          <CreatePasswordForm/>
-        </Grid>
-      </Grid>
       </ModalCustom>
     </Page>
   );

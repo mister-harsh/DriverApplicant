@@ -31,27 +31,6 @@ const Header = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
-  const [startDate, setStartDate] = useState(moment().subtract(7, 'days'));
-  const [endDate, setEndDate] = useState(moment());
-  const [selectEdge, setSelectEdge] = useState(null);
-  const [calendarDate, setCalendarDate] = useState(moment());
-
-  const handleCalendarOpen = edge => {
-    setSelectEdge(edge);
-  };
-
-  const handleCalendarChange = date => {
-    setCalendarDate(date);
-  };
-
-  const handleCalendarClose = () => {
-    setCalendarDate(moment());
-    setSelectEdge(null);
-  };
-
-
-
-  const open = Boolean(selectEdge);
 
   return (
     <div

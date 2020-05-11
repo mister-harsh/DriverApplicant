@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     padding:'3px 20px'
   },
   name: {
-    color: theme.palette.white
+
   },
   logoLink: {
     lineHeight: 0
@@ -33,7 +33,10 @@ const useStyles = makeStyles(theme => ({
     color:'#fff',
     display:'inline-block',
     verticalAlign:'middle',
-    marginRight:'10px'
+    marginRight:'10px',
+    [theme.breakpoints.down('xs')]: {
+      fontSize:'12px',
+    }
   },
   right: {
     textAlign:'right',
@@ -41,7 +44,15 @@ const useStyles = makeStyles(theme => ({
   chat:{
     display:'inline-block',
     verticalAlign:'middle',
-    width:'40px'
+    width:'40px',
+    [theme.breakpoints.down('xs')]: {
+      width:'25px',
+    }
+  },
+  copy:{
+    [theme.breakpoints.down('xs')]: {
+      display:'none'
+    }
   },
 }));
 
@@ -56,7 +67,7 @@ const Footer = props => {
       className={clsx(classes.root, className)}
       color="primary">
       <Grid container spacing={6}>
-        <Grid item xs={12} sm={6} md={6} lg={6}>
+        <Grid className={classes.copy} item xs={12} sm={6} md={6} lg={6}>
           <Typography className={classes.leftText} variant="body1">
             Copyright 2020 J. J. Keller &amp; Associates, Inc. All rights
             reserved.

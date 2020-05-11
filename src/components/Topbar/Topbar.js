@@ -16,10 +16,20 @@ const useStyles = makeStyles(theme => ({
   logoLink: {
     lineHeight:0
   },
+  logoImg:{
+    [theme.breakpoints.down('xs')]: {
+      width: '130px',
+      // padding: theme.spacing(2),
+    }
+  },
   heading:{
     margin: '0 auto',
     color: theme.palette.white,
     fontWeight: '300',
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '20px',
+     
+    }
   }
 }));
 
@@ -37,6 +47,7 @@ const Topbar = props => {
       <Toolbar>
         <RouterLink className={classes.logoLink} to="/">
           <img
+          className={classes.logoImg}
             alt="Logo"
             src="/images/logos/logo.gif"
           />
@@ -54,7 +65,7 @@ const Topbar = props => {
         className={classes.heading}
         variant="h2"
       >
-        Applicat Center
+        Applicant Center
       </Typography>
       </Toolbar>
     </AppBar>
