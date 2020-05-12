@@ -59,7 +59,7 @@ const Header = props => {
           </Typography>
         </Grid>
       </Grid>
-      <Typography
+      {/* <Typography
             component="h1"
             gutterBottom
             variant="h3"
@@ -119,7 +119,7 @@ const Header = props => {
             Address: 125 Main St., Cleveland, OH, 44129
           </Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
     </div>
   );
 };
