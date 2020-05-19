@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import AuthLayout from './layouts/Auth';
 import ErrorLayout from './layouts/Error';
 import DashboardLayout from './layouts/Dashboard';
+import UrlAccess from './layouts/UrlAccess'
 // import DashboardAnalyticsView from './views/DashboardAnalytics';
 
 
@@ -13,7 +14,26 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: () => <Redirect to="/wizard" />
+    component: () => <Redirect to="/auth/login" />
+  },
+  {
+    path: '/access',
+    component: UrlAccess,
+    routes: [
+      {
+        path: '/access/:clientID/',
+        exact: true,
+        component: lazy(() => import('views/ReRoute'))
+      },
+      {
+        path: '/access/:clientID/:userID',
+        exact: true,
+        component: lazy(() => import('views/ReRoute'))
+      },
+      {
+        component: () => <Redirect to="/errors/error-404" />
+      }
+    ]
   },
   {
     path: '/auth',
@@ -61,67 +81,6 @@ const routes = [
         path: '/wizard',
         exact: true,
         component: lazy(() => import('views/Wizard'))
-      },
-      {
-        path: '/dashboard',
-        exact: true,
-        component: lazy(() => import('views/Dashboard'))
-      },
-      {
-        path: '/workflow',
-        exact: true,
-        component: lazy(() => import('views/WorkFlow'))
-      },
-      {
-        path: '/tableType1',
-        exact: true,
-        component: lazy(() => import('views/TableType1'))
-      },
-      {
-        path: '/tableType1/details/:id',
-        exact: true,
-        component: lazy(() => import('views/TableDetails'))
-      },
-      {
-        path: '/tableType1/details/:id/:tab',
-        exact: true,
-        component: lazy(() => import('views/TableDetails'))
-      },
-      {
-        path: '/tableType2',
-        exact: true,
-        component: lazy(() => import('views/TableType2')) 
-      },
-    
-      {
-        path: '/tasks/create',
-        exact: true,
-        component: lazy(() => import('views/ProjectCreate'))
-      },
-      {
-        path: '/tasks/:id',
-        exact: true,
-        component: lazy(() => import('views/ProjectDetails'))
-      },
-      {
-        path: '/tasks/:id/:tab',
-        exact: true,
-        component: lazy(() => import('views/ProjectDetails'))
-      },
-      {
-        path: '/tasks',
-        exact: true,
-        component: lazy(() => import('views/TasksList'))
-      },
-      {
-        path: '/settings',
-        exact: true,
-        component: lazy(() => import('views/Settings'))
-      },
-      {
-        path: '/settings/:tab',
-        exact: true,
-        component: lazy(() => import('views/Settings'))
       },
       {
         component: () => <Redirect to="/errors/error-404" />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -15,6 +15,8 @@ import {
 
 } from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 // import {
 //     Grid,
 //     AppBar,
@@ -80,7 +82,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PersonalInfo = props => {
-  const { className, ...rest } = props;
+  const { className,handleClick, ...rest } = props;
   const [value, setValue] = React.useState(0);
   const [selectedDate, handleDateChange] = useState(new Date());
   const [state, setState] = React.useState({
@@ -88,6 +90,16 @@ const PersonalInfo = props => {
     name: 'hai',
   });
   const classes = useStyles();
+
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      // alert('ComponentDidMount')
+    }
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -101,103 +113,248 @@ const PersonalInfo = props => {
     });
   };
 
+  const personalInfoSchema = Yup.object().shape({
+      lastName: Yup.string()
+      .required('Please enter the last name.'),
+      firstName: Yup.string()
+      .required('Please enter the first name.'),
+      middleName: Yup.string()
+      .required('Please enter the middle name.'),
+      socialSecurityNo: Yup.string()
+      .required('Please enter the social security number.'),
+      phoneNo: Yup.string()
+      .required('Please enter the phone number.'),
+      email: Yup.string()
+      .email('Invalid email')
+      .required('Please enter the email.'),
+  });
+
+  console.log(personalInfoSchema);
+  
+
+    const handleSubmitt = async values => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    handleClick(1)
+    // dispatch(login(values));
+    alert(JSON.stringify(values));
+    // router.history.push('/');
+    
+  }
+
   return (
     <div {...rest} className={clsx(classes.root, className)}>
      {props.isReview == true ? '' : <Typography component="h4" className={classes.heading} variant="h4">
         DRIVER EMPLOYMENT APPLICATION
       </Typography>}
-      <form>
-        <Grid container spacing={3} className={classes.gridRow}>
+
+
+      <Formik
+        initialValues={{
+          lastName: '',
+          firstName: '',
+          middleName:'',
+          socialSecurityNo:'',
+          phoneNo:'',
+          email:'',
+          dob: new Date(),
+        }}
+        onSubmit={handleSubmitt}
+        validationSchema={personalInfoSchema}>
+        {props => {
+          const {
+            values,
+            touched,
+            errors,
+            dirty,
+            isSubmitting,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            handleReset
+          } = props;
+          return (
+            <form
+              className={clsx(classes.root, className)}
+              onSubmit={handleSubmit}>
+              <Grid container spacing={3} className={classes.gridRow}>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <TextField
-              id="lastName"
-              name="lastName"
-              label="Last Name"
-              type="text"
-              fullWidth={true}
-              variant="outlined"
-              classes={{ root: classes.inputBg }}
-              //   value={values.password}
-              //   onChange={handleChange}
-              //   onBlur={handleBlur}
-              //   error={errors.password}
-              //   helperText={
-              //     errors.password && touched.password ? errors.password : null
-              //   }
-              //   className={
-              //     errors.password && touched.password
-              //       ? 'text-input error'
-              //       : 'text-input'
-              //   }
-            />
+          <TextField
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  type="text"
+                  value={values.lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.lastName}
+                  classes={{root: classes.inputBg}}
+                  fullWidth={true}
+                  helperText={
+                    errors.lastName && touched.lastName ? errors.lastName : null
+                  }
+                  className={
+                    errors.lastName && touched.lastName
+                      ? 'text-input error'
+                      : 'text-input'
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <TextField
-              id="firstName"
-              name="firstName"
-              label="First Name"
-              type="text"
-              fullWidth={true}
-              variant="outlined"
-              classes={{ root: classes.inputBg }}
-            />
+
+             <TextField
+                  id="firstName"
+                  label="First Name"
+                  name="firstName"
+                  type="text"
+                  value={values.firstName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.firstName}
+                  classes={{root: classes.inputBg}}
+                  fullWidth={true}
+                  helperText={
+                    errors.firstName && touched.firstName ? errors.firstName : null
+                  }
+                  className={
+                    errors.firstName && touched.firstName
+                      ? 'text-input error'
+                      : 'text-input'
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
+
             <TextField
-              id="middleName"
-              name="middleName"
-              label="Middle Name"
-              type="text"
-              fullWidth={true}
-              variant="outlined"
-              classes={{ root: classes.inputBg }}
-            />
+                  id="middleName"
+                  label="Middle Name"
+                  name="middleName"
+                  type="text"
+                  value={values.middleName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.middleName}
+                  classes={{root: classes.inputBg}}
+                  fullWidth={true}
+                  helperText={
+                    errors.middleName && touched.middleName ? errors.middleName : null
+                  }
+                  className={
+                    errors.middleName && touched.middleName
+                      ? 'text-input error'
+                      : 'text-input'
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
+
           </Grid>
         </Grid>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <TextField
-              id="socialNumber"
-              name="socialNumber"
-              label="Social Security Number"
-              type="text"
-              fullWidth={true}
-              variant="outlined"
-              classes={{ root: classes.inputBg }}
-            />
+
+           <TextField
+                  id="socialSecurityNo"
+                  label="Social Security Number"
+                  name="socialSecurityNo"
+                  type="text"
+                  value={values.socialSecurityNo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.socialSecurityNo}
+                  classes={{root: classes.inputBg}}
+                  fullWidth={true}
+                  helperText={
+                    errors.socialSecurityNo && touched.socialSecurityNo ? errors.socialSecurityNo : null
+                  }
+                  className={
+                    errors.socialSecurityNo && touched.socialSecurityNo
+                      ? 'text-input error'
+                      : 'text-input'
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <TextField
-              id="phoneNumber"
-              name="phoneNumber"
-              label="Phone Number"
-              type="text"
-              fullWidth={true}
-              variant="outlined"
-              classes={{ root: classes.inputBg }}
-            />
+
+          <TextField
+                  id="phoneNo"
+                  label="Phone Number"
+                  name="phoneNo"
+                  type="text"
+                  value={values.phoneNo}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.phoneNo}
+                  classes={{root: classes.inputBg}}
+                  fullWidth={true}
+                  helperText={
+                    errors.phoneNo && touched.phoneNo ? errors.phoneNo : null
+                  }
+                  className={
+                    errors.phoneNo && touched.phoneNo
+                      ? 'text-input error'
+                      : 'text-input'
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
+            
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
-            <TextField
-              id="emailId"
-              name="emailId"
-              label="e-mail"
-              type="text"
-              fullWidth={true}
-              variant="outlined"
-              classes={{ root: classes.inputBg }}
-            />
+          <TextField
+                  id="email"
+                  label="e-mail"
+                  name="email"
+                  type="text"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.email}
+                  classes={{root: classes.inputBg}}
+                  fullWidth={true}
+                  helperText={
+                    errors.email && touched.email ? errors.email : null
+                  }
+                  className={
+                    errors.email && touched.email
+                      ? 'text-input error'
+                      : 'text-input'
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
           </Grid>
           <Grid item xs={12} sm={6} md={3} lg={3}>
             <DatePicker
+             id="dob"
+             label="Birth Date"
+             name="dob"
+             value={values.dob}
+             onChange={date => handleChange(date)}
+             onBlur={handleBlur}
+             error={errors.dob}
               fullWidth={true}
+              helperText={
+                errors.dob && touched.dob ? errors.dob : null
+              }
+              className={
+                errors.dob && touched.dob
+                  ? 'text-input error'
+                  : 'text-input'
+              }
               inputVariant="outlined"
-              label="Birth Date"
+              
               format="MM/DD/YYYY"
-              placeholder="10/10/2018"
-              value={selectedDate}
-              onChange={date => handleDateChange(date)}
+              // placeholder="10/10/2018"
+             
+             
             />
           </Grid>
         </Grid>
@@ -355,7 +512,9 @@ const PersonalInfo = props => {
        <React.Fragment>
        <Button
           className={classes.next}
-          onClick={() => props.handleClick(1)}
+          // onClick={}
+          type="submit" 
+          disabled={isSubmitting}
           variant="contained"
           color="secondary">
           Next
@@ -365,6 +524,14 @@ const PersonalInfo = props => {
         </Button>
         </React.Fragment>
         }
+            </form>
+          );
+        }}
+      </Formik>
+
+      
+      <form>
+        
       </form>
     </div>
   );

@@ -14,7 +14,7 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
     paper: {
-      height:'100%'
+      // height:'100%'
     },
     
   });

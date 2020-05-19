@@ -12,6 +12,7 @@ import {
   TextField,
   Radio,
   RadioGroup,
+  FormGroup,
   FormControlLabel,
   FormControl,
   Checkbox,
@@ -136,12 +137,20 @@ const useStyles = makeStyles(theme => ({
   greyBG: {
     backgroundColor: '#e1e2dd'
   },
-  appCertification:{
-    padding:'0'
+  appCertification: {
+    padding: '0'
   },
   signature: {
     backgroundColor: theme.palette.error.light,
-    marginTop:'15px'
+    marginTop: '15px'
+  },
+  inlineCheckbox: {
+    width: '23%'
+  },
+  answerInput:{
+    width:'250px',
+    display: 'inline-flex',
+    marginLeft:'15px'
   }
 }));
 
@@ -150,12 +159,36 @@ const ExperienceQualifications = props => {
   const [value, setValue] = React.useState(0);
   const [date, setDate] = React.useState('');
   const [selectedDate, handleDateChange] = useState(new Date());
+
   const classes = useStyles();
 
   const [radioValue, setRadioValue] = React.useState('female');
+  const [state, setState] = useState({
+    checkedA: true,
+    checkedB: true,
+    checkedF: true,
+    checkedG: true,
+    noLicence: false,
+    previousValidLicense:"no",
+    drivingExp3Yrs:'yes',
+    accidentIn3Yrs:'yes',
+    trafficConviction:'yes'
+  });
+
+  const [selectedVehicleClass, setSelectedVehicleClass] = useState('')
+
+
 
   const handleRadioChange = event => {
     setRadioValue(event.target.value);
+  };
+
+  const handleStateChange = (event) => {
+    const name = event.target.name;
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
   };
 
   const handleChange = (event, newValue) => {
@@ -166,15 +199,28 @@ const ExperienceQualifications = props => {
     setDate(event.target.value);
   };
 
+  const handleCheckboxChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
+  const handleClassChange = (event) => {
+    setSelectedVehicleClass(event.target.value)
+
+  }
+
+
+  console.log(state);
+  
+
   return (
     <div {...rest} className={clsx(classes.root, className)}>
       {isReview == true ? (
         ''
       ) : (
-        <Typography component="h4" className={classes.heading} variant="h4">
-          EXPERIENCE &amp; QUALIFICATIONS
-        </Typography>
-      )}
+          <Typography component="h4" className={classes.heading} variant="h4">
+            EXPERIENCE &amp; QUALIFICATIONS
+          </Typography>
+        )}
 
       <Divider className={classes.divider} />
 
@@ -185,19 +231,21 @@ const ExperienceQualifications = props => {
           variant="subtitle1">
           Driving experience in the last 3 years?
         </Typography>
+
         <FormControl
-          component="fieldset"
-          className={clsx(classes.inlineRadio, classes.radioField)}>
-          <RadioGroup
-            className={classes.inlineRadio}
-            aria-label="radio"
-            name="gender1"
-            value={radioValue}
-            onChange={handleRadioChange}>
-            <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-            <FormControlLabel value="no" control={<Radio />} label="No" />
-          </RadioGroup>
-        </FormControl>
+            component="fieldset"
+            className={clsx(classes.inlineRadio, classes.radioField)}>
+            <RadioGroup
+              className={classes.inlineRadio}
+              aria-label="radio"
+              name="drivingExp3Yrs"
+              value={state.drivingExp3Yrs}
+              onChange={handleStateChange}>
+              <FormControlLabel value={"yes"} control={<Radio />} label="Yes" />
+              <FormControlLabel value={"no"} control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+
       </Box>
 
       {/* <Divider className={classes.dividerTwo} /> */}
@@ -206,7 +254,7 @@ const ExperienceQualifications = props => {
         {/* <CurrentEmployer/>
         <PreviousEmployer /> */}
 
-        <EquipmentTable />
+       {state.drivingExp3Yrs == 'yes' && <EquipmentTable />}
 
         {/* <Divider className={classes.divider} /> */}
 
@@ -217,22 +265,23 @@ const ExperienceQualifications = props => {
             variant="subtitle1">
             In the last 3 years, have you been in an Accident?
           </Typography>
+
           <FormControl
             component="fieldset"
             className={clsx(classes.inlineRadio, classes.radioField)}>
             <RadioGroup
               className={classes.inlineRadio}
               aria-label="radio"
-              name="gender1"
-              value={radioValue}
-              onChange={handleRadioChange}>
-              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="no" control={<Radio />} label="No" />
+              name="accidentIn3Yrs"
+              value={state.accidentIn3Yrs}
+              onChange={handleStateChange}>
+              <FormControlLabel value={"yes"} control={<Radio />} label="Yes" />
+              <FormControlLabel value={"no"} control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
         </Box>
 
-        <AccidentTable />
+        {state.accidentIn3Yrs  == 'yes' && <AccidentTable />}
 
         <Box className={classes.container} component="div">
           <Typography
@@ -248,15 +297,15 @@ const ExperienceQualifications = props => {
             <RadioGroup
               className={classes.inlineRadio}
               aria-label="radio"
-              name="gender1"
-              value={radioValue}
-              onChange={handleRadioChange}>
+              name="trafficConviction"
+              value={state.trafficConviction}
+              onChange={handleStateChange}>
               <FormControlLabel value="yes" control={<Radio />} label="Yes" />
               <FormControlLabel value="no" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
         </Box>
-        <VoilationTable />
+        {state.trafficConviction == 'yes' && <VoilationTable />}
 
         <Box className={classes.container} component="div">
           <Typography
@@ -277,7 +326,65 @@ const ExperienceQualifications = props => {
           </Typography>
         </Box>
 
-        <LicenseInfo />
+        <LicenseInfo
+          handleClassChange={handleClassChange}
+          selectedVehicleClass={selectedVehicleClass}
+          handleCheckboxChange={handleCheckboxChange}
+          isChecked={state.noLicence}
+        />
+
+{state.noLicence &&<Box className={classes.container} component="div">
+          <Typography
+            component="h4"
+            className={classes.heading2}
+            color="secondary"
+            variant="h4">
+            Previous License Information
+          </Typography>
+
+          <Typography
+            component="p"
+            // className={classes.inlineP}
+            variant="subtitle1">
+            Earlier, you indicated that you resided in <strong>California</strong>
+          </Typography>
+
+          <Typography
+            component="p"
+            className={classes.inlineP}
+            variant="subtitle1">
+            Did you have a valid Drivers License there?
+          </Typography>
+          <FormControl
+            component="fieldset"
+            className={clsx(classes.inlineRadio, classes.radioField)}>
+            <RadioGroup
+              className={classes.inlineRadio}
+              aria-label="radio"
+              name="previousValidLicense"
+              value={state.previousValidLicense}
+              onChange={handleStateChange}>
+              <FormControlLabel value={"yes"} control={<Radio />} label="Yes" />
+              <FormControlLabel value={"no"} control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+        {/* {state.previousValidLicense} */}
+        { state.previousValidLicense == 'yes' && <Box className={classes.childAnswer} component="div">
+        <Typography
+            component="p"
+            className={classes.inlineP}
+            variant="subtitle1">
+            Please give details:
+          </Typography>
+          <FormControl
+              variant="outlined"
+              className={clsx(classes.formControl,classes.answerInput)}>
+          <TextField fullWidth={true} id="outlined-basic" label="Please enter Previous Licence " variant="outlined" />
+         </FormControl>
+
+        </Box>}
+
+        </Box>}
 
         <Box className={classes.container} component="div">
           <Typography
@@ -326,6 +433,269 @@ const ExperienceQualifications = props => {
           </FormControl>
         </Box>
 
+        {selectedVehicleClass && <div> <Box
+          className={clsx(classes.container, classes.fullWidth)}
+          component="div">
+
+          <Grid container spacing={3} className={classes.gridRow}>
+            <Grid item xs={12} sm={3} md={3} lg={3}>
+              <Typography
+                component="p"
+                className={classes.inlineP}
+                variant="subtitle1">
+                C. Select any CDL Endorsements you have:
+          </Typography>
+            </Grid>
+            <Grid item xs={12} sm={9} md={9} lg={9}>
+              <FormGroup row>
+                <FormControlLabel
+                  className={classes.inlineCheckbox}
+                  control={
+                    <Checkbox
+                      className={classes.tableCheckbox}
+                      checked={state.checkedB}
+                      onChange={handleCheckboxChange}
+                      name="checkedB"
+                      color="secondary"
+                    />
+                  }
+                  label="H - hazardous materials"
+                />
+                <FormControlLabel
+                  className={classes.inlineCheckbox}
+                  control={
+                    <Checkbox
+                      className={classes.tableCheckbox}
+                      checked={state.checkedB}
+                      onChange={handleCheckboxChange}
+                      name="checkedB"
+                      color="secondary"
+                    />
+                  }
+                  label="N - tank vehicle"
+                />
+                <FormControlLabel
+                  className={classes.inlineCheckbox}
+                  control={
+                    <Checkbox
+                      className={classes.tableCheckbox}
+                      checked={state.checkedB}
+                      onChange={handleCheckboxChange}
+                      name="checkedB"
+                      color="secondary"
+                    />
+                  }
+                  label="T - double/triple trailers"
+                />
+                <FormControlLabel
+                  className={classes.inlineCheckbox}
+                  control={
+                    <Checkbox
+                      className={classes.tableCheckbox}
+                      checked={state.checkedB}
+                      onChange={handleCheckboxChange}
+                      name="checkedB"
+                      color="secondary"
+                    />
+                  }
+                  label="None"
+                />
+              </FormGroup>
+              <FormGroup row >
+                <FormControlLabel
+                  className={classes.inlineCheckbox}
+                  control={
+                    <Checkbox
+                      className={classes.tableCheckbox}
+                      checked={state.checkedB}
+                      onChange={handleCheckboxChange}
+                      name="checkedB"
+                      color="secondary"
+                    />
+                  }
+                  label="P - passenger"
+                />
+                <FormControlLabel
+                  className={classes.inlineCheckbox}
+                  control={
+                    <Checkbox
+                      className={classes.tableCheckbox}
+                      checked={state.checkedB}
+                      onChange={handleCheckboxChange}
+                      name="checkedB"
+                      color="secondary"
+                    />
+                  }
+                  label="S - school bus"
+                />
+                <FormControlLabel
+                  className={classes.inlineCheckbox}
+                  control={
+                    <Checkbox
+                      className={classes.tableCheckbox}
+                      checked={state.checkedB}
+                      onChange={handleCheckboxChange}
+                      name="checkedB"
+                      color="secondary"
+                    />
+                  }
+                  label="X - combo of tank vehicle &amp; haz mat"
+                />
+              </FormGroup>
+            </Grid>
+
+          </Grid>
+
+
+        </Box>
+
+          <Box
+            className={clsx(classes.container, classes.greyBG, classes.fullWidth)}
+            component="div">
+            <Grid container spacing={3} className={classes.gridRow}>
+              <Grid item xs={12} sm={3} md={3} lg={3}>
+                <Typography
+                  component="p"
+                  className={classes.inlineP}
+                  variant="subtitle1">
+                  D. Select any CDL Restrictions you have:
+          </Typography>
+              </Grid>
+              <Grid item xs={12} sm={9} md={9} lg={9}>
+                <FormGroup row>
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="E - No Manual trans equipped CMV"
+                  />
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="M - No Class A"
+                  />
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="V - medical variance"
+                  />
+                </FormGroup>
+                <FormGroup row >
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="K - Intrastate only"
+                  />
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="N - No Class A &amp; B passenger vehicle"
+                  />
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="Z - No Full air brake equipped CMV"
+                  />
+                </FormGroup>
+
+
+                <FormGroup row >
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="L - No Air brake equipped CMV"
+                  />
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="O - No Tractor-trailer CMV"
+                  />
+                  <FormControlLabel
+                    className={classes.inlineCheckbox}
+                    control={
+                      <Checkbox
+                        className={classes.tableCheckbox}
+                        checked={state.checkedB}
+                        onChange={handleCheckboxChange}
+                        name="checkedB"
+                        color="secondary"
+                      />
+                    }
+                    label="None"
+                  />
+                </FormGroup>
+              </Grid>
+
+            </Grid>
+          </Box>
+        </div>
+        }
+
+
+
         <Box className={classes.container} component="div">
           <Typography
             component="p"
@@ -370,7 +740,7 @@ const ExperienceQualifications = props => {
           </ul>
         </Box>
 
-        <Box className={clsx(classes.container, classes.appCertification) } component="div">
+        <Box className={clsx(classes.container, classes.appCertification)} component="div">
           <Typography
             component="h4"
             className={classes.heading2}
@@ -400,12 +770,12 @@ const ExperienceQualifications = props => {
         {isReview == true ? (
           ''
         ) : (
-          <React.Fragment>
-            <Button className={classes.finishLater} variant="contained">
-              Stop &amp; Finish Later
+            <React.Fragment>
+              <Button className={classes.finishLater} variant="contained">
+                Stop &amp; Finish Later
             </Button>
-          </React.Fragment>
-        )}
+            </React.Fragment>
+          )}
       </form>
     </div>
   );

@@ -10,6 +10,8 @@ export default {
   white,
   yellow,
   darkBlue,
+
+  
   primary: {
     contrastText: white,
     dark: '#12568f',

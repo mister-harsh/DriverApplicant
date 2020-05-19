@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -27,6 +27,7 @@ import {
   Select,
   MenuItem
 } from '@material-ui/core';
+import months from 'constants/global'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -59,12 +60,12 @@ const useStyles = makeStyles(theme => ({
     margin: '0 10px',
     padding: '15px 0'
   },
-  inlineCheckbox:{
-      width:'170px',
-      display: 'inline-flex',
-      '&:last-child':{
-         width:'200px',
-      }
+  inlineCheckbox: {
+    width: '170px',
+    display: 'inline-flex',
+    '&:last-child': {
+      width: '200px',
+    }
   },
   dayPickContainer: {
     display: 'inline-flex'
@@ -72,8 +73,8 @@ const useStyles = makeStyles(theme => ({
   fixedSelect: {
     width: '165px'
   },
-  tableCheckbox:{
-      padding:'2px'
+  tableCheckbox: {
+    padding: '2px'
   }
 }));
 
@@ -87,6 +88,17 @@ const LicenseInfo = props => {
     checkedF: true,
     checkedG: true,
   });
+
+
+  const vehicleClass = [
+    'CDL - A',
+    'CDL - B',
+    'CDL - C',
+    'CDL - Permit',
+    'Non-CDL', 'Other'
+  ]
+
+
 
   const classes = useStyles();
 
@@ -103,169 +115,182 @@ const LicenseInfo = props => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
 
-  return (
-    <div {...rest} className={clsx(classes.root, className)}>
-      <TableContainer>
-        <Table
-          size="small"
-          className={clsx(classes.table, classes.tableBorder)}
-          aria-label="simple table">
-          <TableHead className={classes.tableHead}>
-            <TableRow>
-              <TableCell className={classes.tableBorder} align="center">
-              Current State of Residence
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-              Current License Number
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-              Class
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-              Expiration Date
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell
-                className={classes.tableBorder}
-                component="th"
-                align="center"
-                scope="row">
-                
-              </TableCell>
 
-              <TableCell className={classes.tableBorder} align="center">
-              <FormControl
-                      variant="outlined"
-                      className={clsx(classes.formControl, classes.inputBg)}>
-                
+
+  console.log(months)
+
+  return (
+    <Fragment>
+      <div {...rest} className={clsx(classes.root, className)}>
+        <TableContainer>
+          <Table
+            size="small"
+            className={clsx(classes.table, classes.tableBorder)}
+            aria-label="simple table">
+            <TableHead className={classes.tableHead}>
+              <TableRow>
+                <TableCell className={classes.tableBorder} align="center">
+                  Current State of Residence
+              </TableCell>
+                <TableCell className={classes.tableBorder} align="center">
+                  Current License Number
+              </TableCell>
+                <TableCell className={classes.tableBorder} align="center">
+                  Class
+              </TableCell>
+                <TableCell className={classes.tableBorder} align="center">
+                  Expiration Date
+              </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell
+                  className={classes.tableBorder}
+                  component="th"
+                  align="center"
+                  scope="row">
+                    Minnesota
+                </TableCell>
+
+                <TableCell className={classes.tableBorder} align="center">
+                  <FormControl
+                    variant="outlined"
+                    className={clsx(classes.formControl, classes.inputBg)}>
+
                     <TextField fullWidth={true} id="outlined-basic" label="Licence No." variant="outlined" />
 
-                    </FormControl>
-                    <FormControlLabel
-        control={
-          <Checkbox
-            checked={state.checkedB}
-            onChange={handleCheckboxChange}
-            name="checkedB"
-            color="secondary"
-          />
-        }
-        label="No license in this state yet."
-      />
+                  </FormControl>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.isChecked}
+                        onChange={props.handleCheckboxChange}
+                        name="noLicence"
+                        color="secondary"
+                      />
+                    }
+                    label="No license in this state yet."
+                  />
 
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
+                </TableCell>
+                <TableCell className={classes.tableBorder} align="center">
+                  <FormControl
+                    variant="outlined"
+                    className={clsx(classes.formControl, classes.inputBg)}>
+                    <InputLabel id="demo-simple-select-outlined-label">
+                      Select Class
                   </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-
-              <TableCell className={classes.tableBorder} align="center">
-              <Box className={classes.dayPickContainer} component="div">
-              <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Month
-                    </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Day
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Year
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
+                      value={props.selectedVehicleClass}
+                      onChange={props.handleClassChange}
                       label="Year">
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      {vehicleClass.map((vehicleClass, index) => {
+                        return <MenuItem key={index} value={vehicleClass}>{vehicleClass}</MenuItem>
+                      })}
                     </Select>
                   </FormControl>
-                </Box>
-              </TableCell>
-              
-            </TableRow>
-           
-            
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+                </TableCell>
+
+                <TableCell className={classes.tableBorder} align="center">
+                  <Box className={classes.dayPickContainer} component="div">
+                    <FormControl
+                      variant="outlined"
+                      className={clsx(
+                        classes.formControl,
+                        classes.inputBg,
+                        classes.dateDropdown
+                      )}>
+                      <InputLabel id="demo-simple-select-outlined-label">
+                        Month
+                    </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={date}
+                        onChange={handleDate2Change}
+                        label="Month">
+                        <MenuItem value="">
+                          <em>Select Month</em>
+                        </MenuItem>
+                        {months.map((month)=>{
+                          return <MenuItem value={month.id}>{month.name}</MenuItem>
+                        })}
+
+
+                        {/* <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem> */}
+                      </Select>
+                    </FormControl>{' '}
+                    <span className={classes.inlineSpan}>/</span>
+                    <FormControl
+                      variant="outlined"
+                      className={clsx(
+                        classes.formControl,
+                        classes.inputBg,
+                        classes.dateDropdown
+                      )}>
+                      <InputLabel id="demo-simple-select-outlined-label">
+                        Day
+                    </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={date}
+                        onChange={handleDate2Change}
+                        label="Month">
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>{' '}
+                    <span className={classes.inlineSpan}>/</span>
+                    <FormControl
+                      variant="outlined"
+                      className={clsx(
+                        classes.formControl,
+                        classes.inputBg,
+                        classes.dateDropdown
+                      )}>
+                      <InputLabel id="demo-simple-select-outlined-label">
+                        Year
+                    </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={date}
+                        onChange={handleDate2Change}
+                        label="Year">
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </TableCell>
+
+              </TableRow>
+
+
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+
+
+    </Fragment>
   );
 };
 

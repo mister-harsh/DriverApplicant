@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect   } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import { Typography, Grid, Button, ButtonGroup, Divider,TextField } from '@material-ui/core';
 import { DatePicker } from '@material-ui/pickers';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 // import {
 //     Grid,
 //     AppBar,
@@ -71,9 +73,44 @@ const PersonalInfo = props => {
   const [selectedDate, handleDateChange] = useState(new Date());
   const classes = useStyles();
 
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      // alert('ComponentDidMount')
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+
+
+  const loginSchema = Yup.object().shape({
+    lastName: Yup.string()
+      .required('Please enter the last name.'),
+    // password: Yup.string()
+    //   .min(8)
+    //   .max(16)
+    //   .required('Please enter the Password.')
+  });
+
+    const handleSubmitt = async values => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    // dispatch(login(values));
+    alert(JSON.stringify(values));
+    // router.history.push('/');
+    
+  }
+
 
 
   return (
@@ -84,30 +121,66 @@ const PersonalInfo = props => {
       <Typography component="h4" className={classes.heading} variant="h4">
           DRIVER EMPLOYMENT APPLICATION
         </Typography>
-        <form>
-          <Grid container spacing={3} className={classes.gridRow}>
+
+
+        <Formik
+        initialValues={{
+          lastName: '',
+          firstName: '',
+          middlename:'',
+          socialNo:'',
+          phoneNo:'',
+          email:'',
+          dob:'',
+
+        }}
+        onSubmit={handleSubmitt}
+        validationSchema={loginSchema}>
+        {props => {
+          const {
+            values,
+            touched,
+            errors,
+            dirty,
+            isSubmitting,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            handleReset
+          } = props;
+          return (
+            <form
+              className={clsx(classes.root, className)}
+              onSubmit={handleSubmit}>
+             
+
+
+             <Grid container spacing={3} className={classes.gridRow}>
             <Grid item xs={12} sm={6} md={3} lg={3}>
-              <TextField
-                id="lastName"
-                name="lastName"
-                label="Last Name"
-                type="text"
-                fullWidth={true}
-                variant="outlined"
-                classes={{root: classes.inputBg}}
-                //   value={values.password}
-                //   onChange={handleChange}
-                //   onBlur={handleBlur}
-                //   error={errors.password}
-                //   helperText={
-                //     errors.password && touched.password ? errors.password : null
-                //   }
-                //   className={
-                //     errors.password && touched.password
-                //       ? 'text-input error'
-                //       : 'text-input'
-                //   }
-              />
+
+            <TextField
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  type="text"
+                  value={values.lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.lastName}
+                  classes={{root: classes.inputBg}}
+                  fullWidth={true}
+                  helperText={
+                    errors.lastName && touched.lastName ? errors.lastName : null
+                  }
+                  className={
+                    errors.lastName && touched.lastName
+                      ? 'text-input error'
+                      : 'text-input'
+                  }
+                  fullWidth
+                  variant="outlined"
+                />
+              
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={3}>
               <TextField
@@ -302,12 +375,33 @@ const PersonalInfo = props => {
               </div>
             </Grid>
           </Grid>
-          <Button className={classes.next} variant="contained" color="secondary">
+          <Button type="submit" disabled={isSubmitting} className={classes.next}  variant="contained" color="secondary">
             Next
           </Button>
           <Button className={classes.finishLater} variant="contained" >
             Stop &amp; Finish Later
           </Button>
+
+            </form>
+          );
+        }}
+      </Formik>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <form>
+          
         </form>
     </div>
   );

@@ -24,7 +24,8 @@ import {
   Paper,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  FormGroup
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -68,10 +69,22 @@ const EquipmentTable = props => {
   const classes = useStyles();
 
 
+  const [state, setState] = useState({
+    checkedA: true,
+    checkedB: true,
+    checkedF: true,
+    checkedG: true,
+  });
+
 
   const handleDate2Change = event => {
     setDate(event.target.value);
   };
+
+  const handleCheckboxChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
@@ -523,6 +536,25 @@ const EquipmentTable = props => {
                     <Button>Tank</Button>
                     <Button>Van</Button>
                   </ButtonGroup>
+
+            {/* <FormGroup row>
+   
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={state.checkedB}
+            onChange={handleCheckboxChange}
+            name="checkedB"
+            color="secondary"
+          />
+        }
+        label="Dump"
+      />
+      </FormGroup> */}
+
+
+
+
                 </TableCell>
                 <TableCell className={classes.tableBorder} align="center">
                   <Box className={classes.dayPickContainer} component="div">

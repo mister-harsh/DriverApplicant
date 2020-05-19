@@ -46,6 +46,10 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: 'middle',
     width: '100%'
   },
+  formControlInline: {
+    verticalAlign: 'middle',
+    width: '84%'
+  },
   dateDropdown: {
     width: '85px'
   },
@@ -63,6 +67,19 @@ const useStyles = makeStyles(theme => ({
   },
   fixedSelect: {
     width: '165px'
+  },
+  resetIcon:{
+    display:'inline-flex',
+    width:'30px',
+    cursor:'pointer',
+    marginLeft:'10px',
+    verticalAlign:'middle',
+    '& img':{
+      width:'100%',
+    },
+  },
+  textOptional:{
+    marginTop:'15px'
   }
 }));
 
@@ -71,7 +88,10 @@ const AccidentTable = props => {
   const [date, setDate] = React.useState('');
   const [radioValue, setRadioValue] = React.useState('female');
   const classes = useStyles();
-
+  const [state, setState] = React.useState({
+    stateVal: 'hello',
+    natureOfAccident: '',
+  });
   const handleDate2Change = event => {
     setDate(event.target.value);
   };
@@ -80,6 +100,16 @@ const AccidentTable = props => {
     setRadioValue(event.target.value);
   };
 
+  const handleStateChange = (event) => {
+    const name = event.target.name;
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };
+
+  console.log(state);
+  
 
   return (
     <div {...rest} className={clsx(classes.root, className)}>
@@ -167,26 +197,49 @@ const AccidentTable = props => {
                 </Box>
               </TableCell>
               <TableCell className={classes.tableBorder} align="center">
-                <FormControl
+
+
+              <FormControl
                   variant="outlined"
                   className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
+                  <InputLabel id="natureOfAccident">
+                    Select Nature of Accident
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
+                    labelId="natureOfAccident"
+                    id="natureOfAccident"
+                    name="natureOfAccident"
+                    value={state.natureOfAccident}
+                    onChange={handleStateChange}
+                    >
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={'angleImpactCollision'}>Angle/Side-Impact Collision</MenuItem>
+                    <MenuItem value={'animalCollision'}>Animal Collision</MenuItem>
+                    <MenuItem value={'cyclist Collision'}>Cyclist Collision</MenuItem>
+                    <MenuItem value={'headOnFrontImpactCollision'}>Head-On/Front-Impact Collision</MenuItem>
+                    <MenuItem value={'motorcycleCollision'}>Motorcycle Collision</MenuItem>
+                    <MenuItem value={'multiVehicleCollision'}>Multi-Vehicle Collision</MenuItem>
+                    <MenuItem value={'pedestrianCollision'}>Pedestrian Collision</MenuItem>
+                    <MenuItem value={'rearEndCollision'}>Rear-End Collision</MenuItem>
+                    <MenuItem value={'rollover'}>Rollover</MenuItem>
+                    <MenuItem value={'runOffCollision'}>Run-Off-Road Collision</MenuItem>
+                    <MenuItem value={'sideSwipe'}>Side-Swipe</MenuItem>
+                    <MenuItem value={'others'}>Others</MenuItem>
                   </Select>
                 </FormControl>
+                  
+                   {state.natureOfAccident == 'others' && <FormControl
+                      variant="outlined"
+                      className={clsx(classes.formControl, classes.textOptional, classes.inputBg)}>
+                     <TextField fullWidth={true} id="outlined-basic" name='' label="Accident Type" variant="outlined" />
+                   </FormControl>}
+
+
+                      {/* <Box className={classes.resetIcon}  component='span'>
+                        <img src='./images/reset.svg' />
+                      </Box> */}
               </TableCell>
               <TableCell className={classes.tableBorder} align="center">
                 <FormControl
@@ -256,450 +309,7 @@ const AccidentTable = props => {
                 </FormControl>
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell
-                className={classes.tableBorder}
-                component="th"
-                align="center"
-                scope="row">
-                <Box className={classes.dayPickContainer} component="div">
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Month
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Year
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Year">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-              <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  component="fieldset"
-                  className={clsx(classes.inlineRadio, classes.radioField)}>
-                  <RadioGroup
-                    className={classes.inlineRadio}
-                    aria-label="radio"
-                    name="gender1"
-                    value={radioValue}
-                    onChange={handleRadioChange}>
-                    <FormControlLabel
-                      value="yes"
-                      control={<Radio />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="no"
-                      control={<Radio />}
-                      label="No"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell
-                className={classes.tableBorder}
-                component="th"
-                align="center"
-                scope="row">
-                <Box className={classes.dayPickContainer} component="div">
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Month
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Year
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Year">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-              <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  component="fieldset"
-                  className={clsx(classes.inlineRadio, classes.radioField)}>
-                  <RadioGroup
-                    className={classes.inlineRadio}
-                    aria-label="radio"
-                    name="gender1"
-                    value={radioValue}
-                    onChange={handleRadioChange}>
-                    <FormControlLabel
-                      value="yes"
-                      control={<Radio />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="no"
-                      control={<Radio />}
-                      label="No"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell
-                className={classes.tableBorder}
-                component="th"
-                align="center"
-                scope="row">
-                <Box className={classes.dayPickContainer} component="div">
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Month
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Year
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Year">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-              <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  component="fieldset"
-                  className={clsx(classes.inlineRadio, classes.radioField)}>
-                  <RadioGroup
-                    className={classes.inlineRadio}
-                    aria-label="radio"
-                    name="gender1"
-                    value={radioValue}
-                    onChange={handleRadioChange}>
-                    <FormControlLabel
-                      value="yes"
-                      control={<Radio />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="no"
-                      control={<Radio />}
-                      label="No"
-                    />
-                  </RadioGroup>
-                </FormControl>
-              </TableCell>
-            </TableRow>
+            
           </TableBody>
         </Table>
       </TableContainer>

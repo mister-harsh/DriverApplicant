@@ -15,19 +15,18 @@ import { configureStore } from './store';
 import routes from './routes';
 import {
   ScrollReset,
-  GoogleAnalytics,
-  CookiesNotification
+  // GoogleAnalytics,
+  // CookiesNotification 
 } from './components';
-import './mixins/chartjs';
 import './mixins/moment';
 import './mixins/validate';
-import './mixins/prismjs';
+// import './mixins/prismjs';
 import './mock';
 import './assets/scss/index.scss';
 
 const history = createBrowserHistory();
 const store = configureStore();
-
+ 
 const App = () => {
   return (
     <StoreProvider store={store}>
@@ -35,8 +34,8 @@ const App = () => {
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Router history={history}>
             <ScrollReset />
-            <GoogleAnalytics />
-            <CookiesNotification />
+            {/* <GoogleAnalytics /> */}
+            {/* <CookiesNotification /> */}
             {renderRoutes(routes)}
           </Router>
         </MuiPickersUtilsProvider>

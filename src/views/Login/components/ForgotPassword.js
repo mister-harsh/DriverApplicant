@@ -3,13 +3,21 @@ import React, { useState, useEffect } from 'react';
 import validate from 'validate.js';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Button, TextField, FormHelperText, Link } from '@material-ui/core';
+import {
+  Button,
+  TextField,
+  FormHelperText,
+  Link,
+  Paper,
+  Typography,
+  Checkbox
+} from '@material-ui/core';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import useRouter from 'utils/useRouter';
-// import { login } from 'actions';
+import { login } from 'actions';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -27,34 +35,34 @@ const useStyles = makeStyles(theme => ({
     width: '100%'
   },
   showPassword: {
-    width:'100%',
-    cursor:'pointer'
-  }
+    width: '100%',
+    cursor: 'pointer'
+  },
+  clause: {
+    backgroundColor: '#d9d9d9',
+    padding: theme.spacing(2)
+  },
+  body2: {
+    lineHeight: theme.spacing(2.5) + 'px'
+  },
+  agreeCheckbox:{
+    padding: '0 10px 0 0'
+  },
+  signature:{
+    cursor:'pointer',
+    color: theme.palette.error.main
+  },
 }));
 
-const LoginForm = props => {
+const ForgotPassword = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
-
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      // alert('ComponentDidMount')
-    }
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-
-  const loginSchema = Yup.object().shape({
+  const registerSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email')
       .required('Please enter the Email.'),
@@ -64,34 +72,23 @@ const LoginForm = props => {
       .required('Please enter the Password.')
   });
 
-
-  const credentials = useSelector(
-    state => state.session.credentials
-  );
-
-  const handleSubmitt = async values => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    // dispatch(login(values));
-    alert(JSON.stringify(values));
-    router.history.push('/wizard');
-    
-  }
-
   const handlePasswordToggle = () => {
-    setShowPassword(!showPassword)
-  }
-  
-console.log(credentials);
+    setShowPassword(!showPassword);
+  };
 
   return (
     <React.Fragment>
       <Formik
         initialValues={{
           email: '',
-          password: ''
         }}
-        onSubmit={handleSubmitt}
-        validationSchema={loginSchema}>
+        onSubmit={async values => {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          // dispatch(createGraph(values));
+          router.history.push('/');
+          console.log(values);
+        }}
+        validationSchema={registerSchema}>
         {props => {
           const {
             values,
@@ -129,45 +126,15 @@ console.log(credentials);
                   variant="outlined"
                 />
 
-                <TextField
-                  id="password"
-                  name="password"
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.password}
-                  helperText={
-                    errors.password && touched.password ? errors.password : null
-                  }
-                  className={
-                    errors.password && touched.password
-                      ? 'text-input error'
-                      : 'text-input'
-                  }
-                  variant="outlined"
-                />
-
-                <Link
-                  color="secondary"
-                  underline="always"
-                  variant="subtitle2"
-                  className={classes.showPassword}
-                  onClick={handlePasswordToggle}
-                >
-                    
-                  {showPassword ? 'Hide Password' : 'Show Password'}
-                </Link>
               </div>
               <Button
                 type="submit"
                 className={classes.submitButton}
                 variant="contained"
-                color="primary"
-                size="large"
+                color="secondary"
+                size="medium"
                 disabled={isSubmitting}>
-                Sign in
+                Send Reset Link
               </Button>
             </form>
           );
@@ -177,8 +144,8 @@ console.log(credentials);
   );
 };
 
-LoginForm.propTypes = {
+ForgotPassword.propTypes = {
   className: PropTypes.string
 };
 
-export default LoginForm;
+export default ForgotPassword;

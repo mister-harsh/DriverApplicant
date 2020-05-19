@@ -18,13 +18,10 @@
 - Material-UI
 - Redux
 - Redux Saga
-- ChartJS
-- React Markdown
-- React Full Calendar
 
 ### Quick start
 
 - Install dependencies: `npm install`
 - Start the server: `npm run start`
-- Views are on: `localhost:80`
+- Views are on: `localhost:3000`
 - Latest node & react versions recommended

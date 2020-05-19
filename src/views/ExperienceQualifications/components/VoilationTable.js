@@ -74,6 +74,19 @@ const useStyles = makeStyles(theme => ({
   },
   tableCheckbox:{
       padding:'2px'
+  },
+  resetIcon:{
+    display:'inline-flex',
+    width:'30px',
+    cursor:'pointer',
+    marginLeft:'10px',
+    verticalAlign:'middle',
+    '& img':{
+      width:'100%',
+    },
+  },
+  textOptional:{
+    marginTop:'15px'
   }
 }));
 
@@ -86,6 +99,7 @@ const VoilationTable = props => {
     checkedB: true,
     checkedF: true,
     checkedG: true,
+    voilationType: '',
   });
 
   const classes = useStyles();
@@ -98,7 +112,15 @@ const VoilationTable = props => {
     setRadioValue(event.target.value);
   };
 
+  const handleStateChange = (event) => {
+    const name = event.target.name;
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };
 
+  
   const handleCheckboxChange = (event) => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
@@ -117,6 +139,9 @@ const VoilationTable = props => {
               </TableCell>
               <TableCell className={classes.tableBorder} align="center">
                 Violations (excluding parking)
+              </TableCell>
+              <TableCell className={classes.tableBorder} align="center">
+                Country Violation Occurred
               </TableCell>
               <TableCell className={classes.tableBorder} align="center">
                 State Violation Occurred
@@ -186,6 +211,51 @@ const VoilationTable = props => {
                 </Box>
               </TableCell>
 
+              <TableCell className={classes.tableBorder} align="center">
+              <FormControl
+                  variant="outlined"
+                  className={clsx(classes.formControl, classes.inputBg)}>
+                  <InputLabel id="voilationType">
+                    Select voilation type
+                  </InputLabel>
+                  <Select
+                    labelId="voilationType"
+                    id="voilationType"
+                    name="voilationType"
+                    value={state.voilationType}
+                    onChange={handleStateChange}
+                    >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="cellPhone">Cell Phone</MenuItem>
+                    <MenuItem value="crossingMedian">Crossing the Median</MenuItem>
+                    <MenuItem value="drivingWrongDirection">Driving in Wrong Direction</MenuItem>
+                    <MenuItem value="dui/owi">DUI/OWI</MenuItem>
+                    <MenuItem value="following too Closely">Following too Closely</MenuItem>
+                    <MenuItem value="not Signaling">Not Signaling</MenuItem>
+                    <MenuItem value="not Stopping for Pedestrians">Not Stopping for Pedestrians</MenuItem>
+                    <MenuItem value="not Stopping for School Bus"> Not Stopping for School Bus</MenuItem>
+                    <MenuItem value="passing in No Passing Zone">Passing in No Passing Zone</MenuItem>
+                    <MenuItem value="railroad Crossing Violation">Railroad Crossing Violation</MenuItem>
+                    <MenuItem value="reckless Driving">Reckless Driving</MenuItem>
+                    <MenuItem value="running Red Light">Running Red Light</MenuItem>
+                    <MenuItem value="running Stop Sign">Running Stop Sign</MenuItem>
+                    <MenuItem value="seat Belt,Speeding">Seat Belt,Speeding</MenuItem>
+                    <MenuItem value="texting,Unsafe Lane Change">Texting,Unsafe Lane Change</MenuItem>
+                    <MenuItem value="violatingRailroadRules">Violating Railroad Rules</MenuItem>
+                    <MenuItem value="others">Others</MenuItem>
+                   
+                
+                  </Select>
+                </FormControl>
+                  
+                   {state.voilationType == 'others' && <FormControl
+                      variant="outlined"
+                      className={clsx(classes.formControl, classes.textOptional, classes.inputBg)}>
+                     <TextField fullWidth={true} id="outlined-basic" name='' label="Voilation Type" variant="outlined" />
+                   </FormControl>}
+              </TableCell>
               <TableCell className={classes.tableBorder} align="center">
                 <FormControl
                   variant="outlined"
@@ -315,571 +385,7 @@ className={classes.tableCheckbox}
                 </FormGroup>
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell
-                className={classes.tableBorder}
-                component="th"
-                align="center"
-                scope="row">
-                <Box className={classes.dayPickContainer} component="div">
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Month
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Year
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Year">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </TableCell>
-
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormGroup  row>
-                  <FormControlLabel
-                    className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Fined"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Imprisoned"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="License Points Assessed"
-                  />
-                </FormGroup>
-                <FormGroup row >
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="License Suspended"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Ticketed"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Traffic School"
-                  />
-                </FormGroup>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell
-                className={classes.tableBorder}
-                component="th"
-                align="center"
-                scope="row">
-                <Box className={classes.dayPickContainer} component="div">
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Month
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Year
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Year">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </TableCell>
-
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormGroup  row>
-                  <FormControlLabel
-                    className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Fined"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Imprisoned"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="License Points Assessed"
-                  />
-                </FormGroup>
-                <FormGroup row >
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="License Suspended"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Ticketed"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Traffic School"
-                  />
-                </FormGroup>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell
-                className={classes.tableBorder}
-                component="th"
-                align="center"
-                scope="row">
-                <Box className={classes.dayPickContainer} component="div">
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Month
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Month">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>{' '}
-                  <span className={classes.inlineSpan}>/</span>
-                  <FormControl
-                    variant="outlined"
-                    className={clsx(
-                      classes.formControl,
-                      classes.inputBg,
-                      classes.dateDropdown
-                    )}>
-                    <InputLabel id="demo-simple-select-outlined-label">
-                      Year
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={date}
-                      onChange={handleDate2Change}
-                      label="Year">
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Box>
-              </TableCell>
-
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormControl
-                  variant="outlined"
-                  className={clsx(classes.formControl, classes.inputBg)}>
-                  <InputLabel id="demo-simple-select-outlined-label">
-                    Select
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={date}
-                    onChange={handleDate2Change}
-                    label="Year">
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </TableCell>
-              <TableCell className={classes.tableBorder} align="center">
-                <FormGroup  row>
-                  <FormControlLabel
-                    className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                      
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Fined"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Imprisoned"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="License Points Assessed"
-                  />
-                </FormGroup>
-                <FormGroup row >
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="License Suspended"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Ticketed"
-                  />
-                  <FormControlLabel
-                  className={classes.inlineCheckbox}
-                    control={
-                      <Checkbox
-className={classes.tableCheckbox}
-                        checked={state.checkedB}
-                        onChange={handleCheckboxChange}
-                        name="checkedB"
-                        color="secondary"
-                      />
-                    }
-                    label="Traffic School"
-                  />
-                </FormGroup>
-              </TableCell>
-            </TableRow>
+            
           </TableBody>
         </Table>
       </TableContainer>

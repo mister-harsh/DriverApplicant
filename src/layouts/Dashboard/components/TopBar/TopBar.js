@@ -31,7 +31,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 import axios from 'utils/axios';
 import useRouter from 'utils/useRouter';
-import { PricingModal, NotificationsPopover } from 'components';
+import { NotificationsPopover } from 'components';
 import { logout } from 'actions';
 
 const useStyles = makeStyles(theme => ({

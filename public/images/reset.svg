@@ -1,0 +1,15 @@
+
+<svg contentScriptType="text/ecmascript" zoomAndPan="magnify"
+     xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css"
+     id="Layer_1" version="1.0" width="64" preserveAspectRatio="xMidYMid meet"
+     viewBox="0 0 64 64" data-name="Layer 1" height="64"
+     xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style type="text/css" xml:space="preserve">.cls-1{fill:#A9A9A9;}</style>
+    </defs><title>
+        reset
+    </title>
+    <path fill="#A9A9A9"
+          d="M36,8A24,24,0,0,0,12,30.63L5.71,24.3A1,1,0,1,0,4.3,25.71l8,8A1,1,0,0,0,13,34a1,1,0,0,0,.71-0.29l8-8A1,1,0,0,0,20.3,24.3l-6.24,6.24a22,22,0,1,1,1,8.16,1,1,0,1,0-1.91.61A24,24,0,1,0,36,8Z"
+          class="cls-1"/>
+</svg>

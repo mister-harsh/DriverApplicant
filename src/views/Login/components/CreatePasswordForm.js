@@ -12,7 +12,8 @@ import {
   Link,
   Paper,
   Typography,
-  Checkbox
+  Checkbox,
+  Box
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -55,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CreatePasswordForm = props => {
-  const { className, ...rest } = props;
+  const { className,handleOpenSignature, ...rest } = props;
 
   const classes = useStyles();
   const router = useRouter();
@@ -189,7 +190,7 @@ const CreatePasswordForm = props => {
                   <Typography
                     classes={{ body2: classes.body2 }}
                     color="inherit"
-                    variant="body2">
+                    variant="subtitle1">
                     <Checkbox
                       className={classes.agreeCheckbox}
                       color="primary"
@@ -198,7 +199,7 @@ const CreatePasswordForm = props => {
                     Please check this box if you consent to providing an
                     electronic signature (rather than a handwritten signature)
                     and also consent to receiving electronic notifications per
-                    the <span className={classes.signature}> electronic signature details</span>, which I have read and
+                    the <Box component='span' className={classes.signature} onClick={handleOpenSignature}> electronic signature details</Box>, which I have read and
                     understand.
                   </Typography>
                 </Paper>

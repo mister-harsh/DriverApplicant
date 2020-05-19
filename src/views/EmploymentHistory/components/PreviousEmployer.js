@@ -29,7 +29,7 @@ import { DatePicker } from '@material-ui/pickers';
 //     Button
 //   } from '@material-ui/core';
 //   import { DatePicker } from '@material-ui/pickers';
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   inputBg: {
     backgroundColor: theme.palette.white
@@ -81,8 +81,8 @@ const useStyles = makeStyles(theme => ({
   gridPadding: {
     padding: theme.spacing(2.5, 0, 1.2, 0)
   },
-  addJobContainer:{
-      textAlign:'center'
+  addJobContainer: {
+    textAlign: 'center'
   },
   next: {
     marginRight: '15px',
@@ -110,12 +110,12 @@ const useStyles = makeStyles(theme => ({
     top: '-11px',
     color: '#818181'
   },
-  prevEmp:{
-      borderTop:'1px solid #ddd'
+  prevEmp: {
+    borderTop: '1px solid #ddd'
   }
 }));
 
-const PreviousEmployer = props => {
+const PreviousEmployer = (props) => {
   const { className, ...rest } = props;
   const [value, setValue] = React.useState(0);
   const [selectedDate, handleDateChange] = useState(new Date());
@@ -123,7 +123,7 @@ const PreviousEmployer = props => {
 
   const [radioValue, setRadioValue] = React.useState('female');
 
-  const handleRadioChange = event => {
+  const handleRadioChange = (event) => {
     setRadioValue(event.target.value);
   };
 
@@ -132,8 +132,8 @@ const PreviousEmployer = props => {
   };
 
   return (
-      <React.Fragment>
-          <Box className={classes.prevEmp} component="div">
+    <React.Fragment>
+      <Box className={classes.prevEmp} component="div">
         <Box className={classes.container} component="div">
           <Typography
             component="h4"
@@ -144,14 +144,14 @@ const PreviousEmployer = props => {
           </Typography>
           <Grid container spacing={3} className={classes.gridRow}>
             <Grid item xs={12} sm={6} md={3} lg={3}>
-                <TextField
-                    id="EmpName"
-                    name="EmpName"
-                    label="Employer Name / Truck Driving School"
-                    type="text"
-                    fullWidth={true}
-                    variant="outlined"
-                    classes={{ root: classes.inputBg }}
+              <TextField
+                id="EmpName"
+                name="EmpName"
+                label="Employer Name / Truck Driving School"
+                type="text"
+                fullWidth={true}
+                variant="outlined"
+                classes={{ root: classes.inputBg }}
                 //   value={values.password}
                 //   onChange={handleChange}
                 //   onBlur={handleBlur}
@@ -265,7 +265,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Month"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -278,7 +278,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Year"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -291,7 +291,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Month"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -304,7 +304,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Year"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
               </Grid>
@@ -411,7 +411,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Month"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -424,7 +424,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Year"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -437,7 +437,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Month"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} lg={3}>
@@ -450,7 +450,7 @@ const PreviousEmployer = props => {
                     // format="YYYY"
                     placeholder="Year"
                     value={selectedDate}
-                    onChange={date => handleDateChange(date)}
+                    onChange={(date) => handleDateChange(date)}
                   />
                 </Grid>
               </Grid>
@@ -469,7 +469,7 @@ const PreviousEmployer = props => {
           </Grid>
         </Box>
         <Divider className={classes.divider} />
-        </Box>
+      </Box>
     </React.Fragment>
   );
 };
