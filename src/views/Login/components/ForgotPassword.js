@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import validate from 'validate.js';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
   Button,
@@ -17,7 +17,7 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import useRouter from 'utils/useRouter';
-import { login } from 'actions';
+import { forgetPasswordAuthPost } from 'actions';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -33,6 +33,12 @@ const useStyles = makeStyles(theme => ({
   submitButton: {
     marginTop: theme.spacing(2),
     width: '100%'
+  },
+  errorText:{
+    color:'red',
+    textAlign:'center',
+    marginTop:'8px',
+    marginBottom:'0'
   },
   showPassword: {
     width: '100%',
@@ -60,21 +66,32 @@ const ForgotPassword = props => {
   const classes = useStyles();
   const router = useRouter();
   const dispatch = useDispatch();
-  const [showPassword, setShowPassword] = useState(false);
 
-  const registerSchema = Yup.object().shape({
+  const forgetState  = useSelector(
+    state => state.auth
+  );
+
+
+  const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email')
       .required('Please enter the Email.'),
-    password: Yup.string()
-      .min(8)
-      .max(16)
-      .required('Please enter the Password.')
   });
 
-  const handlePasswordToggle = () => {
-    setShowPassword(!showPassword);
-  };
+
+  const handleSubmitt = (values) =>{
+
+
+    const data ={
+      Username: values.email
+    }
+
+          dispatch(forgetPasswordAuthPost(data));
+          // router.history.push('/');
+  }
+
+  console.log(forgetState.forgetPassStatusMessage);
+  
 
   return (
     <React.Fragment>
@@ -82,13 +99,8 @@ const ForgotPassword = props => {
         initialValues={{
           email: '',
         }}
-        onSubmit={async values => {
-          await new Promise(resolve => setTimeout(resolve, 500));
-          // dispatch(createGraph(values));
-          router.history.push('/');
-          console.log(values);
-        }}
-        validationSchema={registerSchema}>
+        onSubmit={handleSubmitt}
+        validationSchema={forgetPasswordSchema}>
         {props => {
           const {
             values,
@@ -127,6 +139,15 @@ const ForgotPassword = props => {
                 />
 
               </div>
+
+            {forgetState.isLinkSent == false && <Typography
+            color="inherit"
+            className={classes.errorText}
+            align='center'
+            variant="body1"
+            gutterBottom>
+            {forgetState.forgetPassStatusMessage}
+           </Typography>}
               <Button
                 type="submit"
                 className={classes.submitButton}

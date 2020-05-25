@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -28,6 +29,13 @@ const Topbar = props => {
 
   const classes = useStyles();
 
+  const jobDetails  = useSelector(
+    state => state.auth.jobDetails
+  );
+
+  console.log(jobDetails.companyName);
+  
+
   return (
     <AppBar
       {...rest}
@@ -36,17 +44,17 @@ const Topbar = props => {
     >
       <Toolbar>
         <RouterLink className={classes.logoLink} to="/">
-          <img
-            alt="Logo"
-            src="/images/logos/logo.gif"
-          />
-
-      {/* <Typography
+         {jobDetails.companyName ?  <Typography
         className={classes.name}
         variant="h2"
       >
-        TF ReactKit
-      </Typography> */}
+        {jobDetails.companyName}
+      </Typography> : <img
+            alt="Logo"
+            src="/images/logos/logo.gif"
+          />}
+
+     
 
         </RouterLink>
 

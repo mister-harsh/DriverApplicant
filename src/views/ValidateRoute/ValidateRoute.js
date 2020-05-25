@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -20,8 +21,8 @@ import Grid from '@material-ui/core/Grid';
 import { Page } from 'components';
 import gradients from 'utils/gradients';
 // import { LoginForm, CreatePasswordForm, ForgotPassword } from './components';
-
 import ModalCustom from 'components/ModalCustom';
+import {getJobDetailsPost} from 'actions'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -69,49 +70,25 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const ReRoute = (props) => {
+const ValidateRoute = (props) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const { match, history } = props;
-    const { clientID, userID } = match.params;
-    //   const [state, setState] = React.useState({
-    //     showLoader:true,
-    //     isPathInvalid:false, 
-    //   });
+    const { clientID, jobCode } = match.params;
 
-    const [showLoader, setShowLoader] = useState(true);
-    const [isPathInvalid, setIsPathInvalid] = useState(false);
+    const clientName = clientID ? clientID : '';
+    const userName = jobCode ? jobCode : ''
 
     useEffect(() => {
         let mounted = true;
 
         if (mounted) {
-            const clientName = clientID ? clientID : '';
-            const userName = userID ? userID : ''
-            console.log('clientID', clientID);
-            console.log('userID', userID);
 
-
-
-            if (clientName.split('').length > 0 && userName.split('').length > 0) {
-
-                setTimeout(() => {
-                    setShowLoader(false)
-                    history.push('/auth/login')
-                }, 3000)
-            }
-            if (clientID == undefined || userID == undefined) {
-                // alert('coming in invalid')
-                // setState(state=>({
-                //     ...state,
-                //     showLoader:false,
-                //     isPathInvalid: true,
-                //   })); 
-                setTimeout(() => {
-                    setShowLoader(false)
-                    setIsPathInvalid(true)
-                }, 3000)
-
-            }
+            const params = {
+                ClientSuffix : clientID ? clientID : '',
+                JobCode : jobCode ? jobCode : ''
+            } 
+            dispatch(getJobDetailsPost(params));
 
         }
         return () => {
@@ -119,23 +96,32 @@ const ReRoute = (props) => {
         };
     }, []);
 
-    //   const handleStateChange = (event) => {
-    //     const name = event.target.name;
-    //     setState({
-    //       ...state,
-    //       [name]: event.target.value,
-    //     });
-    //   };
+    const jobDetails  = useSelector(
+        state => state.auth.jobDetails
+      );
+      const allState  = useSelector(
+        state => state.auth
+      );
 
-    console.log('showLoader', showLoader);
-    console.log('isPathInvalid', isPathInvalid);
+      if (clientName.split('').length > 0 && userName.split('').length > 0) {
+
+        if(jobDetails.status){
+            history.push('/auth/login')
+        }
+    }
+
+            //     if (clientName == undefined || userName == undefined || jobDetails.companyName == null) { 
+            //         setShowLoader(false)
+            //         setIsPathInvalid(true)
+            // }
+    
 
     return (
-        <Page className={clsx(classes.root, classes.routePage, { [classes.routebackground]: !showLoader })} title="ReRoute">
+        <Page className={clsx(classes.root, classes.routePage, { [classes.routebackground]: !allState.isLoading })} title="ReRoute">
             <Box className={classes.loader} component="div">
-                {showLoader && <CircularProgress size={80} className={classes.spinner} />}
+                {allState.isLoading && <CircularProgress size={80} className={classes.spinner} />}
 
-               {isPathInvalid && <Card className={classes.jobCard}>
+               {allState.isNotValidPath && <Card className={classes.jobCard}>
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" variant='h5' component="h5" gutterBottom>
                         This job posting is not currently open to applicants.
@@ -149,4 +135,4 @@ const ReRoute = (props) => {
     );
 };
 
-export default ReRoute;
+export default ValidateRoute;

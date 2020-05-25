@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -19,7 +20,7 @@ import Grid from '@material-ui/core/Grid';
 import { Page } from 'components';
 import gradients from 'utils/gradients';
 import { LoginForm, CreatePasswordForm, ForgotPassword } from './components';
-
+import {getJobDetailsPost} from 'actions'
 import ModalCustom from 'components/ModalCustom';
 
 const useStyles = makeStyles(theme => ({
@@ -176,10 +177,36 @@ const useStyles = makeStyles(theme => ({
 
 const Login = () => {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const [openCreatePass, setOpenCreatePass] = useState(false);
   const [openForgotPass, setOpenForgotPass] = useState(false);
   const [electroicSignature, setElectroicSignature] = useState(false);
+
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+
+        const params = {
+            ClientSuffix : 'kellertransportationllc',
+            JobCode : 'neenahcdl'
+        } 
+        dispatch(getJobDetailsPost(params));
+
+    }
+    return () => {
+        mounted = false;
+    };
+}, []);
+
+
+  const jobDetails  = useSelector(
+    state => state.auth.jobDetails
+  );
+
+
+
   const handleOpenCreatePass = () => {
     setOpenCreatePass(true);
   };
@@ -204,6 +231,13 @@ const Login = () => {
     setElectroicSignature(!electroicSignature)
   }
 
+  const handleCloseError = () =>{
+
+  }
+
+
+console.log(jobDetails);
+
   return (
     <Page className={clsx(classes.root, classes.login)} title="Login">
       <Card className={classes.card}>
@@ -213,11 +247,11 @@ const Login = () => {
             className={classes.mediaTitle}
             variant="h3"
             gutterBottom>
-            Welcome!
+            {jobDetails.greeting}
           </Typography>
 
           <Typography color="inherit" variant="h5">
-            Local CDL Truck Driver – Home Daily
+            {jobDetails.jobTitle}
           </Typography>
           <Divider className={classes.divider2} />
 
@@ -225,12 +259,10 @@ const Login = () => {
             className={classes.subtitle2}
             color="inherit"
             variant="subtitle2">
-            ABC Safety has immediate openings for drivers. Drivers will stay
-            within a 100 mile radius and enjoy working for a family owned
-            business.
+            {jobDetails.jobDescription}
           </Typography>
 
-          <ul className={classes.descPoints}>
+          {/* <ul className={classes.descPoints}>
             <li>
               {' '}
               <Typography
@@ -264,7 +296,7 @@ const Login = () => {
                 Sign on bonus!
               </Typography>
             </li>
-          </ul>
+          </ul> */}
 
           <Button
             className={classes.mediaButton}
@@ -315,7 +347,7 @@ const Login = () => {
         backDrop={true}
         width="md">
         <Grid container spacing={6}>
-          <Grid item xs={12} sm={6} md={7} lg={7}>
+          <Grid item xs={12} sm={6} md={6} lg={6}>
 
             {electroicSignature == false ? <Box component="div">
             <Typography color="inherit" variant="h4">
@@ -438,7 +470,7 @@ const Login = () => {
           
             
           </Grid>
-          <Grid item xs={12} sm={6} md={5} lg={5}>
+          <Grid item xs={12} sm={6} md={6} lg={6}>
             <Typography
               color="inherit"
               variant="h4"
@@ -498,6 +530,9 @@ const Login = () => {
       <ForgotPassword />
           
       </ModalCustom>
+
+
+
 
 
     </Page>

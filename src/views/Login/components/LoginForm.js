@@ -5,11 +5,14 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
-import { Button, TextField, FormHelperText, Link } from '@material-ui/core';
+import { Button, TextField, FormHelperText, Link, Typography, CircularProgress  } from '@material-ui/core';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import useRouter from 'utils/useRouter';
 // import { login } from 'actions';
+import {loginAuthPost, commonErrorClose} from 'actions'
+import ModalCustom from 'components/ModalCustom'; 
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -22,19 +25,34 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1)
     }
   },
+  errorText:{
+    color:'red',
+    textAlign:'center',
+    marginTop:'8px',
+    marginBottom:'0'
+  },
   submitButton: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1.2),
     width: '100%'
   },
   showPassword: {
     width:'100%',
     cursor:'pointer'
-  }
+  },
+  buttonWrapper: {
+    position: 'relative',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -5,
+    marginLeft: -12,
+  },
 }));
 
 const LoginForm = props => {
   const { className, ...rest } = props;
-
   const classes = useStyles();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -46,12 +64,17 @@ const LoginForm = props => {
 
     if (mounted) {
       // alert('ComponentDidMount')
-    }
+    } 
 
     return () => {
       mounted = false;
     };
   }, []);
+
+  const authState  = useSelector(
+    state => state.auth
+  );
+
 
 
   const loginSchema = Yup.object().shape({
@@ -59,29 +82,45 @@ const LoginForm = props => {
       .email('Invalid email')
       .required('Please enter the Email.'),
     password: Yup.string()
-      .min(8)
-      .max(16)
+      // .min(8)
+      // .max(16)
       .required('Please enter the Password.')
   });
 
 
-  const credentials = useSelector(
-    state => state.session.credentials
-  );
-
   const handleSubmitt = async values => {
     await new Promise(resolve => setTimeout(resolve, 500));
-    // dispatch(login(values));
-    alert(JSON.stringify(values));
-    router.history.push('/wizard');
+    const data = {
+      userName:values.email,
+      password:values.password
+    }
+
+    dispatch(loginAuthPost(data));
+
+
+
+    
+    // alert(JSON.stringify(data));
+    // router.history.push('/wizard');
     
   }
 
   const handlePasswordToggle = () => {
     setShowPassword(!showPassword)
   }
+
+  const handleCloseError = () => {
+    dispatch(commonErrorClose());
+  }
   
-console.log(credentials);
+
+  console.log(authState.isLoggedIn);
+
+
+  if(authState.isLoggedIn == true ){
+    router.history.push('/wizard');
+  }
+
 
   return (
     <React.Fragment>
@@ -160,6 +199,18 @@ console.log(credentials);
                   {showPassword ? 'Hide Password' : 'Show Password'}
                 </Link>
               </div>
+             {authState.isLoggedIn == false && <Typography
+            color="inherit"
+            className={classes.errorText}
+            align='center'
+            variant="body1"
+            gutterBottom>
+            {authState.loginStatusMessage}
+          </Typography>}
+
+            
+
+              <div className={classes.buttonWrapper}>
               <Button
                 type="submit"
                 className={classes.submitButton}
@@ -169,10 +220,32 @@ console.log(credentials);
                 disabled={isSubmitting}>
                 Sign in
               </Button>
+        {isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
+      </div>
             </form>
           );
         }}
       </Formik>
+
+      <ModalCustom
+        title="Error"
+        open={authState.errorStatus}
+        close={handleCloseError}
+        // submitButton={}
+        actions={false}
+        backDrop={true}
+        width="sm">
+
+       <Typography
+              color="inherit"
+              variant="subtitle1"
+              className={classes.createTitle}>
+              {authState.errorMessage}
+            </Typography>
+
+           
+          
+      </ModalCustom>
     </React.Fragment>
   );
 };

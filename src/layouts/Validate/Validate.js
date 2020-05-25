@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UrlAccess = props => {
+const Validate = props => {
   const { route } = props;
 
   const classes = useStyles();
@@ -36,8 +36,8 @@ const UrlAccess = props => {
   );
 };
 
-UrlAccess.propTypes = {
+Validate.propTypes = {
   route: PropTypes.object
 };
 
-export default UrlAccess;
+export default Validate;

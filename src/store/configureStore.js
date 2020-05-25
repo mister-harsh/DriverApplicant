@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { logger } from 'redux-logger';
 import createSagaMiddleware from "redux-saga";
+import rootSaga from 'sagas';
 
 import rootReducer from 'reducers';
 
@@ -24,7 +25,7 @@ export default function configureStore(preloadedState = {}) {
 
   return {
     ...createStore(rootReducer, preloadedState, composedEnhancers),
-    // runSaga: sagaMiddleware.run(rootSaga)
+    runSaga: sagaMiddleware.run(rootSaga)
   }
 
 

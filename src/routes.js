@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import AuthLayout from './layouts/Auth';
 import ErrorLayout from './layouts/Error';
 import DashboardLayout from './layouts/Dashboard';
-import UrlAccess from './layouts/UrlAccess'
+import Validate from './layouts/Validate'
 // import DashboardAnalyticsView from './views/DashboardAnalytics';
 
 
@@ -17,18 +17,18 @@ const routes = [
     component: () => <Redirect to="/auth/login" />
   },
   {
-    path: '/access',
-    component: UrlAccess,
+    path: '/validate',
+    component: Validate,
     routes: [
       {
-        path: '/access/:clientID/',
+        path: '/validate/:clientID/',
         exact: true,
-        component: lazy(() => import('views/ReRoute'))
+        component: lazy(() => import('views/ValidateRoute'))
       },
       {
-        path: '/access/:clientID/:userID',
+        path: '/validate/:clientID/:jobCode',
         exact: true,
-        component: lazy(() => import('views/ReRoute'))
+        component: lazy(() => import('views/ValidateRoute'))
       },
       {
         component: () => <Redirect to="/errors/error-404" />

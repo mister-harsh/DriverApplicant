@@ -40,12 +40,15 @@ import { DatePicker } from '@material-ui/pickers';
 //     Button
 //   } from '@material-ui/core';
 //   import { DatePicker } from '@material-ui/pickers';
+import SignatureCanvas from 'react-signature-canvas'
+
 import {
   EquipmentTable,
   AccidentTable,
   VoilationTable,
   LicenseInfo
 } from './components';
+import ModalCustom from 'components/ModalCustom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -138,11 +141,14 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: '#e1e2dd'
   },
   appCertification: {
-    padding: '0'
+    padding: '0 0 20px 0'
   },
   signature: {
     backgroundColor: theme.palette.error.light,
-    marginTop: '15px'
+    marginTop: '15px',
+    '&:hover':{
+      backgroundColor: theme.palette.error.light
+    }
   },
   inlineCheckbox: {
     width: '23%'
@@ -151,6 +157,19 @@ const useStyles = makeStyles(theme => ({
     width:'250px',
     display: 'inline-flex',
     marginLeft:'15px'
+  },
+  signatureWrapper:{
+    width:'100%',
+    display:'block',
+    margin:'0px 0px 17px 0',
+    border:'1px solid #cacaca',
+  },
+  signatureActions:{
+    display:'flex',
+    justifyContent:'center',
+    '& button':{
+      marginLeft:'10px'
+    }
   }
 }));
 
@@ -172,7 +191,8 @@ const ExperienceQualifications = props => {
     previousValidLicense:"no",
     drivingExp3Yrs:'yes',
     accidentIn3Yrs:'yes',
-    trafficConviction:'yes'
+    trafficConviction:'yes',
+    isSignatureOpen:false,
   });
 
   const [selectedVehicleClass, setSelectedVehicleClass] = useState('')
@@ -206,6 +226,13 @@ const ExperienceQualifications = props => {
   const handleClassChange = (event) => {
     setSelectedVehicleClass(event.target.value)
 
+  }
+
+  const handleSignaturePopUp = () =>{
+    setState({
+      ...state,
+      isSignatureOpen: !state.isSignatureOpen,
+    });
   }
 
 
@@ -760,7 +787,9 @@ const ExperienceQualifications = props => {
           <Button
             className={classes.signature}
             variant="contained"
-            color="secondary">
+            color="secondary"
+            onClick={handleSignaturePopUp}
+            >
             Electronic Signature
           </Button>
         </Box>
@@ -776,7 +805,42 @@ const ExperienceQualifications = props => {
             </Button>
             </React.Fragment>
           )}
-      </form>
+      </form> 
+
+      <ModalCustom
+        title="Sign Here"
+        open={state.isSignatureOpen}
+        close={handleSignaturePopUp}
+        // submitButton={}
+        actions={false}
+        backDrop={true}
+        width="sm">
+        <Box className={classes.signatureWrapper} component='div'>
+
+        <SignatureCanvas penColor='black' canvasProps={{width: 568, height: 200, className: 'sigCanvas'}} />
+        </Box>
+<div className={classes.signatureActions}>
+        <Button
+                // className={classes.submitButton}
+                variant="contained"
+                color="secondary"
+                size="medium"
+               >
+                Save
+              </Button>
+              <Button
+                
+                // className={classes.submitButton}
+                variant="contained"
+                color="default"
+                size="medium"
+               >
+                Clear
+              </Button>
+     
+              </div>
+          
+      </ModalCustom>
     </div>
   );
 };

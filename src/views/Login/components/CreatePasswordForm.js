@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import validate from 'validate.js';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import {
   Button,
@@ -18,7 +18,7 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import useRouter from 'utils/useRouter';
-import { login } from 'actions';
+import { registerAuthPost } from 'actions';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -30,6 +30,12 @@ const useStyles = makeStyles(theme => ({
       flexGrow: 1,
       margin: theme.spacing(1)
     }
+  },
+  errorText:{
+    color:'red',
+    textAlign:'center',
+    marginTop:'8px',
+    marginBottom:'0'
   },
   submitButton: {
     marginTop: theme.spacing(2),
@@ -62,6 +68,15 @@ const CreatePasswordForm = props => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConformPassword, setShowConformPassword] = useState(false);
+  const [state, setState] = React.useState({
+    isAgreed: false,
+  });
+
+  const regDetails  = useSelector(
+    state => state.auth
+  );
+
 
   const registerSchema = Yup.object().shape({
     email: Yup.string()
@@ -70,26 +85,63 @@ const CreatePasswordForm = props => {
     password: Yup.string()
       .min(8)
       .max(16)
-      .required('Please enter the Password.')
+      .required('Please enter the Password.'),
+    conformPassword: Yup.string()
+      .required('Please conform the Password.')
+      .when("password", {
+        is: val => (val && val.length > 0 ? true : false),
+        then: Yup.string().oneOf(
+          [Yup.ref("password")],
+          "Both password need to be the same"
+        )
+    })
   });
 
   const handlePasswordToggle = () => {
     setShowPassword(!showPassword);
   };
+  const handleConformPasswordToggle = () => {
+    setShowConformPassword(!showConformPassword);
+  };
+
+
+  // const handleStateChange = (event) => {
+  //   const name = event.target.name;
+  //   setState({
+  //     ...state,
+  //     [name]: event.target.value,
+  //   });
+  // };
+
+  const handleCheckboxChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
+
+  const handleSubmitt =  values => {
+
+    const data = {
+      username:values.email,
+      password:values.password
+    }
+    alert(JSON.stringify(values))
+
+     dispatch(registerAuthPost(data));
+    
+  }
+
+  if(regDetails.isRegistered){
+    router.history.push('/wizard');
+  }
 
   return (
     <React.Fragment>
       <Formik
         initialValues={{
           email: '',
-          password: ''
+          password: '',
+          conformPassword:'',
         }}
-        onSubmit={async values => {
-          await new Promise(resolve => setTimeout(resolve, 500));
-          // dispatch(createGraph(values));
-          router.history.push('/');
-          console.log(values);
-        }}
+        onSubmit={handleSubmitt}
         validationSchema={registerSchema}>
         {props => {
           const {
@@ -158,19 +210,19 @@ const CreatePasswordForm = props => {
                 </Link>
 
                 <TextField
-                  id="password"
-                  name="password"
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={values.password}
+                  id="conformPassword"
+                  name="conformPassword"
+                  label="Conform Password"
+                  type={showConformPassword ? 'text' : 'password'}
+                  value={values.conformPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={errors.password}
+                  error={errors.conformPassword}
                   helperText={
-                    errors.password && touched.password ? errors.password : null
+                    errors.password && touched.conformPassword ? errors.conformPassword : null
                   }
                   className={
-                    errors.password && touched.password
+                    errors.conformPassword && touched.conformPassword
                       ? 'text-input error'
                       : 'text-input'
                   }
@@ -182,8 +234,8 @@ const CreatePasswordForm = props => {
                   underline="always"
                   variant="subtitle2"
                   className={classes.showPassword}
-                  onClick={handlePasswordToggle}>
-                  {showPassword ? 'Hide Password' : 'Show Password'}
+                  onClick={handleConformPasswordToggle}>
+                  {showConformPassword ? 'Hide Password' : 'Show Password'}
                 </Link>
 
                 <Paper className={classes.clause} elevation={3}>
@@ -193,7 +245,10 @@ const CreatePasswordForm = props => {
                     variant="subtitle1">
                     <Checkbox
                       className={classes.agreeCheckbox}
-                      color="primary"
+                      name='isAgreed'
+                      checked={state.isAgreed}
+                      onChange={handleCheckboxChange}
+                      color="secondary"
                       inputProps={{ 'aria-label': 'primary checkbox' }}
                     />
                     Please check this box if you consent to providing an
@@ -204,15 +259,24 @@ const CreatePasswordForm = props => {
                   </Typography>
                 </Paper>
               </div>
-              {/* <Button
+
+              {regDetails.isRegistered == false && <Typography
+            color="inherit"
+            className={classes.errorText}
+            align='center'
+            variant="body1"
+            gutterBottom>
+            {regDetails.registerStatusMessage}
+          </Typography>}
+            {state.isAgreed &&  <Button
                 type="submit"
                 className={classes.submitButton}
                 variant="contained"
                 color="primary"
                 size="large"
                 disabled={isSubmitting}>
-                Sign in
-              </Button> */}
+                Save Credentials &amp; Sign in
+              </Button>}
             </form>
           );
         }}
