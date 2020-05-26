@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
@@ -19,10 +19,13 @@ import LockIcon from '@material-ui/icons/Lock';
 import Grid from '@material-ui/core/Grid';
 import { Page } from 'components';
 import gradients from 'utils/gradients';
+import * as ReactPdf from 'react-pdf';
+import { pdfjs } from 'react-pdf';
+import ReactToPrint from 'react-to-print';
 import { LoginForm, CreatePasswordForm, ForgotPassword } from './components';
 import {getJobDetailsPost} from 'actions'
 import ModalCustom from 'components/ModalCustom';
-
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 const useStyles = makeStyles(theme => ({
   root: {
     height: '100%',
@@ -156,6 +159,15 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.yellow,
     textDecoration: 'underline'
   },
+  printTextColor: {
+    color: "inherit"
+  },
+  pdfButton: {
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+    'text-align': 'right',
+  },
   forgetUl:{
     marginBottom:'20px'
   },
@@ -177,8 +189,13 @@ const useStyles = makeStyles(theme => ({
 
 const Login = () => {
   const classes = useStyles();
+  const reactPdfComp = useRef(null);
   const dispatch = useDispatch();
   const [openCreatePass, setOpenCreatePass] = useState(false);
+  const [openPDFDialog, setOpenPDFDialog] = useState(false);
+  const [pdfFilePath, setPdfFilePath] = useState("");
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
   const [openForgotPass, setOpenForgotPass] = useState(false);
   const [electroicSignature, setElectroicSignature] = useState(false);
 
@@ -187,13 +204,12 @@ const Login = () => {
     let mounted = true;
 
     if (mounted) {
-
+      setPdfFilePath("https://arxiv.org/pdf/2005.07213.pdf");
         const params = {
             ClientSuffix : 'kellertransportationllc',
             JobCode : 'neenahcdl'
         } 
         dispatch(getJobDetailsPost(params));
-
     }
     return () => {
         mounted = false;
@@ -214,6 +230,26 @@ const Login = () => {
   const handleCloseCreatePass = () => {
     setOpenCreatePass(!openCreatePass);
   };
+
+  const handleOpenPDFDialog = () => {
+    setOpenPDFDialog(true);
+  };
+
+  const handleClosePDFDialog = () => {
+    setOpenPDFDialog(!openPDFDialog);
+  };
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  }
+
+  const renderAllPages = () => {
+    let allPages = [];
+    for (let i = 1; i <= numPages; i++) {
+      allPages.push(<ReactPdf.Page pageNumber={i} key={"Page_" + i} />);
+    }
+    return allPages;
+  }
 
   const handleOpenForgotPass =()=>{
     setOpenForgotPass(true)
@@ -301,7 +337,8 @@ console.log(jobDetails);
           <Button
             className={classes.mediaButton}
             variant="contained"
-            color="primary">
+            color="primary"
+            onClick={handleOpenPDFDialog} >
             View Full Job Description
           </Button>
         </CardMedia>
@@ -482,6 +519,37 @@ console.log(jobDetails);
         </Grid>
       </ModalCustom>
 
+      <ModalCustom
+        title="Job Description"
+        open={openPDFDialog}
+        close={handleClosePDFDialog}
+        actions={false}
+        backDrop={true}
+        width="md">
+
+        <div className={classes.pdfButton}>
+          <Button href={pdfFilePath} target="_blank"
+            download="proposed_file_name" component={Link}
+            variant="contained"
+            color="primary">
+            Download
+           </Button>
+
+          <Button
+            variant="contained"
+            color="primary">
+            <ReactToPrint trigger={() => {
+              return <Link className={classes.printTextColor} href="#">Print</Link>;
+            }}
+              content={() => reactPdfComp.current} />
+          </Button>
+        </div>
+        <ReactPdf.Document ref={reactPdfComp} loading={""}
+          file={pdfFilePath}
+          onLoadSuccess={onDocumentLoadSuccess}>
+          {renderAllPages()}
+        </ReactPdf.Document>
+      </ModalCustom>
 
       <ModalCustom
         title="Forgot your Password?"

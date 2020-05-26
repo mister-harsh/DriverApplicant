@@ -66,7 +66,58 @@ const useStyles = makeStyles(theme => ({
          alignItems:'center',
          padding:'0 16px',
          textAlign:'center',
-      }
+      },
+      card: {
+        // width: theme.breakpoints.values.md,
+        maxWidth: '100%',
+        width:'75%',
+        overflow: 'unset',
+        // display: 'flex',
+        position: 'relative',
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+        '& > *': {
+          flexGrow: 1,
+          flexBasis: '85%',
+          width: '85%',
+          [theme.breakpoints.down('xs')]: {
+            flexBasis: '100%',
+            width: '100%'
+          }
+        },
+        [theme.breakpoints.down('xs')]: {
+          flexDirection: 'column'
+        }
+      },
+      media: {
+        position: 'relative',
+        borderTopRightRadius: 4,
+        borderBottomRightRadius: 4,
+        padding: theme.spacing(2.5),
+        color: theme.palette.white,
+        display: 'flex',
+        paddingBottom: '70px',
+        backgroundColor: '#0001197d',
+        flexDirection: 'column',
+        // justifyContent: 'flex-end',
+        marginBottom: '15px',
+        [theme.breakpoints.down('xs')]: {
+          order: '1',
+          padding: '5px 20px 15px 20px',
+        }
+      },
+      mediaTitle: {
+        marginBottom: '5px'
+      },
+      divider2: {
+        margin: theme.spacing(1, 0),
+        backgroundColor: '#b3b3b3'
+      },
+      subtitle2: {
+        color: '#ffffffe6',
+        marginBottom:'14px',
+      },
+      
 
 }));
 
@@ -109,19 +160,95 @@ const ValidateRoute = (props) => {
             history.push('/auth/login')
         }
     }
-
             //     if (clientName == undefined || userName == undefined || jobDetails.companyName == null) { 
             //         setShowLoader(false)
             //         setIsPathInvalid(true)
             // }
     
+            console.log("clientID", clientID);
+            console.log('jobCode',jobCode);
 
     return (
         <Page className={clsx(classes.root, classes.routePage, { [classes.routebackground]: !allState.isLoading })} title="ReRoute">
-            <Box className={classes.loader} component="div">
-                {allState.isLoading && <CircularProgress size={80} className={classes.spinner} />}
+           {allState.isLoading &&  <Box className={classes.loader} component="div">
+                <CircularProgress size={80} className={classes.spinner} />
+            </Box>}
 
-               {allState.isNotValidPath && <Card className={classes.jobCard}>
+        <Card className={classes.card}>
+        {clientID == undefined && jobCode == undefined && allState.isLoading == false && allState.isNotValidPath && <CardMedia className={classes.media} title="Cover">
+          <Typography
+            color="inherit"
+            className={classes.mediaTitle}
+            variant="h3"
+            gutterBottom>
+            Welcome to Applicant Center.
+          </Typography>
+
+          {/* <Typography color="inherit" variant="h5">
+            {jobDetails.jobTitle}
+          </Typography> */}
+          <Divider className={classes.divider2} />
+
+          <Typography
+            className={classes.subtitle2}
+            color="inherit"
+            variant="subtitle1">
+           As the trucking industry continues to struggle with a growing shortage of drivers, J.J. Keller, Inc has developed a new tech-oriented recruitment solution to attract drivers.
+          </Typography>
+          <Typography
+            className={classes.subtitle2}
+            color="inherit"
+            variant="subtitle1">
+           CDL class A over-the-road drivers are probably the hardest drivers to find right now and there is a need to hire qualified drivers in quick time.
+          </Typography>
+          <Typography
+            className={classes.subtitle2}
+            color="inherit"
+            variant="subtitle1">
+            Applicant Center is a hiring solution for recruiting experienced and qualified CDL drivers. This is based on compliance related to cities or states, in hiring of professional drivers. In a nutshell, a Compliance based Hiring Applicant Center for drivers.
+          </Typography>
+
+        </CardMedia>}
+
+        {clientID && jobCode == undefined && allState.isLoading == false && allState.isNotValidPath && <CardMedia className={classes.media} title="Cover">
+          <Typography
+            color="inherit"
+            className={classes.mediaTitle}
+            variant="h3"
+            gutterBottom>
+            Hello!
+          </Typography>
+          <Divider className={classes.divider2} />
+
+          <Typography
+            className={classes.subtitle2}
+            color="inherit"
+            variant="subtitle1">
+           Something is not right. If you are looking for a job details, you will need to access it with a correct URL
+          </Typography>
+
+        </CardMedia>}
+        {clientID && jobCode && allState.isLoading == false && allState.isNotValidPath && <CardMedia className={classes.media} title="Cover">
+          <Typography
+            color="inherit"
+            className={classes.mediaTitle}
+            variant="h3"
+            gutterBottom>
+            Hello!
+          </Typography>
+          <Divider className={classes.divider2} />
+
+          <Typography
+            className={classes.subtitle2}
+            color="inherit"
+            variant="subtitle1">
+           This job posting is not currently open to applicants.
+          </Typography>
+
+        </CardMedia>}
+        </Card>
+
+ {/* {allState.isNotValidPath && <Card className={classes.jobCard}>
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" variant='h5' component="h5" gutterBottom>
                         This job posting is not currently open to applicants.
@@ -129,8 +256,8 @@ const ValidateRoute = (props) => {
                      
                     </CardContent>
                   
-                </Card>}
-            </Box>
+                </Card>} */}
+
         </Page>
     );
 };

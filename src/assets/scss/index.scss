@@ -44,3 +44,14 @@ a {
 .MuiTextField-root{
 background-color: #fff;
 }
+
+.react-pdf__Page__annotations{
+  display: none;
+}
+
+ 
+
+.react-pdf__Page__annotations canvas{
+  margin: 0 auto;
+  border: 1px solid #ddd;
+}

@@ -157,7 +157,7 @@ function a11yProps(index) {
 
 const Wizard = () => {
   const classes = useStyles();
-  const [tabValue, setTabValue] = React.useState(2);
+  const [tabValue, setTabValue] = React.useState(0);
   const steps = getSteps();
 
   const handleChange = (event, newValue) => {

@@ -14,19 +14,24 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: () => <Redirect to="/auth/login" />
+    component: () => <Redirect to="/rr" />
   },
   {
-    path: '/validate',
+    path: '/rr',
     component: Validate,
     routes: [
       {
-        path: '/validate/:clientID/',
+        path: '/rr/',
         exact: true,
         component: lazy(() => import('views/ValidateRoute'))
       },
       {
-        path: '/validate/:clientID/:jobCode',
+        path: '/rr/:clientID/',
+        exact: true,
+        component: lazy(() => import('views/ValidateRoute'))
+      },
+      {
+        path: '/rr/:clientID/:jobCode',
         exact: true,
         component: lazy(() => import('views/ValidateRoute'))
       },
